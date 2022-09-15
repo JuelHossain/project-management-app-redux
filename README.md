@@ -1,27 +1,70 @@
-# 1) এসাইনমেন্টে কি কি করতে হবে:
+# Getting Started with Create React App
 
-1.1) সবার প্রথমে আপনাদের কে একটি লগইন সিস্টেম বানাতে হবে। রিপোসিটরির "html_template" folder এ আপনারা টেম্পলেট পাবেন এবং সেখানে "login.html" নামে একটি ফাইল আছে। এখান থেকে ইউজার লগইন করতে পারবেন। রেজিস্ট্রেশন ফিচার প্রয়োজন নেই। আপনারা লগইন এবং authentication এর জন্য json-server-auth package ব্যবহার করবেন। ডাটাবেজে কিছু ইউজার নিজেরা এন্ট্রি দিয়ে নিবেন এবং সেই ইউজার রাই লগইন করতে পারবেন। এজন্য যদি json-server-auth এর ডকুমেন্টেশন দেখা লাগে দেখতে হবে। ইউজার এর avatar এর সরাসরি কোন image লিঙ্ক দিতে পারেন। এন্ট্রি দেয়ার সময় আপনারা locally POST man বা যেকোন এপিআই ক্লায়েন্ট ব্যবহার করে এন্ট্রি দিয়ে নিতে পারেন যেন ইউজার এর পাসওয়ার্ড ঠিক মতো ডাটাবেজে এঙ্ক্রিপ্ট হয়ে যায়। এরপরে login.html UI এর মাধ্যমে আপনারা login functionality implement করবেন।
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-1.2) login করার পর teams.html পেইজ template এর UI তে আপনারা ল্যান্ড করবেন এবং এই পেইজ থেকে নতুন Team create করা যাবে। Top Right corner এ একটি + বাটন আছে সেটিতে ক্লিক করলে একটি মোডাল ওপেন হবে এবং সেখান থেকে নতুন Team তৈরী করা যাবে। টিম এর নাম আপনারা যা খুশি দিতে পারেন এবং কয়েকটি Team তৈরী করতে পারেন যেমন "Design" team, "Tech" team etc এবং প্রতিটি team এর একটি নাম, কোন date এ add করছেন, একটি 1 line descrption এবং team এর জন্য একটি কালার সিলেক্ট করবেন। কালার হিসেবে tailwind এর ক্লাস নেম ইনপুট নিতে পারেন যেন পরে UI তে সেটা দেখাতে পারেন। Team add করার সময় যে ইউজার add করছেন তিনি automatic team এ assigned হয়ে যাবেন।
+## Available Scripts
 
-1.3) প্রতিটি Team add করার পর সেগুলোকে এই teams.html UI তে লোড করে দেখাতে হবে। একজন ইউজার যে যে team এ assigned শুধুমাত্র সেই team গুলোই লিস্ট এ দেখতে পাবেন। এখানে কোন pagination প্রয়োজন নেই এবং সব team একবারে লোড করে দিতে পারেন।
+In the project directory, you can run:
 
-1.4) প্রতিটি Team card এর উপর মাউস নিলে দেখবেন টপ রাইট সাইডে একটি option icon আছে। সেখান থেকে আরেকটি modal এ Team এ member যুক্ত করা যাবে। মেম্বার তাদেরকেই যুক্ত করা যাবে যারা আমাদের ইউজার table এ Database এ আছে। একজন মেম্বার already যুক্ত থাকলে তাকে আর যুক্ত করা যাবেনা। multiple user কে এসাইন করা যাবে।
+### `npm start`
 
-1.5) এরপরের পেইজ হল projects.html পেইজ যেখানে projects গুলো (শুধু যেগুলোতে logged in user assigned) কার্ড আকারে latest first sort হয়ে দেখাবে ঠিক যেভাবে projects.html page এ দেখানো হয়েছে। শুরুতে projects page এ কিচ্ছু থাকবেনা। কিন্তু উপরের সেকশন গুলো থাকবে যেমন - "Backlog", "Ready", "Doing", "Review", "Blocked" and "Done". এই state গুলো পরিবর্তন করার দরকার নেই। এই state গুলো static.
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-1.6) শুধুমাত্র "Backlog" section এর উপরে একটি plus icon আছে। এখান থেকে ঐ টিমের প্রজেক্ট add করা যাবে একটি মোডালের মাধ্যমে। তারমানে প্রথমে created প্রজেক্ট default ভাবে Backlog stage এ থাকবে। প্রজেক্ট add করার মোডালে প্রজেক্টের একটি টাইটেল, সেটা কবে create করা হয়েছে সেই date, project টি কোন টিমের under এ আছে সেটি এবং কে ক্রিয়েট করেছেন সেই তথ্য থাকবে।
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-1.7) project card এ তথ্য দেখানোর সময় colored ছোট বক্স গুলোতে ঐ প্রজেক্ট এর "team" এর নাম (ঐ team এর color অনুযায়ী বক্স এর কালার হবে), project title, created date এবং যিনি ক্রিয়েট করেছেন তার একটি ছবি দেখাবে যেভাবে UI তে দেখানো হয়েছে।
+### `npm test`
 
-1.8) শুধুমাত্র backlog stage এ যে প্রজেক্ট গুলো থাকবে, সেগুলোকে delete করা যাবে। এজন্য UI তে backlog stage এর প্রথম project card এর উপর মাউস নিলে right side এ আপনারা একটি option icon দেখতে পাবেন। সেটি ব্যবহার করতে পারেন। শুধুমাত্র project এর creator শুধু delete করতে পারবেন।
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-1.9) backlog stage থেকে যেকোন project কে drag করে অন্য যেকোন stage এ নেয়া যাবে এবং এটি server এর সাথে sync থাকতে হবে মানে reload দিলে যেন project টি সঠিক stage এ থাকে। Drag and Drop এর ফিচার implement করার জন্য আপনারা [React DnD](https://react-dnd.github.io/react-dnd/about) package ব্যবহার করতে পারেন।
+### `npm run build`
 
-1.10) অন্য যেকোন stage থেকে যেকোন প্রজেক্ট কে backlog stage এ আনা যাবে। সব কিছুই সার্ভার এর সাথে sync থাকতে হবে।
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-1.11) প্রতিটি stage এ কয়টি করে প্রজেক্ট আছে সেই count টি stage এর নামের পাশে দেখাতে হবে ঠিক যেভাবে UI তে দেখানো হয়েছে।
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-1.12) ফাইনালি শুধু প্রজেক্ট পেইজে একদম navigation bar এ থাকা search box ব্যবহার করে projects এর title দিয়ে সার্চ করতে পারতে হবে। সার্চটি ক্লায়েন্ট সাইড বা সার্ভার যেটি আপনারা উপযুক্ত মনে করেন সেটি ব্যবহার করে ফাংশনাল করতে পারেন। search এ যে যে project result এ আসবে, সেগুলোকে UI তে ঐ ঐ project card কে হাইলাইট করে দিতে হবে। হতে পারে card এর চারপাশে একটি border দিয়ে অথবা হাল্কা animation or blink করে। এক্ষেত্রে tailwind এর animate class ব্যবহার করতে পারেন। search implement করার সময় আপনারা debounce technique use করতে পারেন যদি চান।
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-1.13) পুরো প্রজেক্ট এর সব state সার্ভার এর সাথে sync থাকতে হবে যেন যেকোন সময় reload দিলে কাজ করে।
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
