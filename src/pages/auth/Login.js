@@ -4,12 +4,36 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Checkbox,
   Input,
   Typography,
 } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../features/auth/authApi";
+import isValidEmail from "../../utils/isValidEmail";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passError, setPassError] = useState("");
+  const [emailSuccess, setEmailSuccess] = useState(false);
+  const [passSuccess, setPassSuccess] = useState(false);
+
+  const [login, { error, isSuccess }] = useLoginMutation();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess,navigate]);
+
+  const loginHandler = () => {
+    if (email && pass) {
+      login({ email, password: pass });
+    }
+  };
   return (
     <div className="container mx-auto flex justify-center items-center h-screen">
       <Card className="w-96">
@@ -23,28 +47,55 @@ export default function Login() {
           </Typography>
         </CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <Input label="Email" size="lg" />
-          <Input label="Password" size="lg" />
-          <div className="-ml-2.5">
-            <Checkbox label="Remember Me" />
-          </div>
+          <Input
+            onChange={(e) => {
+              if (isValidEmail(e.target.value)) {
+                setEmailError("");
+                setEmailSuccess(true);
+                setEmail(e.target.value);
+              } else {
+                setEmailSuccess(false);
+                setEmailError("Invalid Email");
+              }
+            }}
+            type="email"
+            required
+            label={emailError || "Email"}
+            size="lg"
+            error={!!emailError}
+            success={emailSuccess}
+          />
+          <Input
+            onChange={(e) => {
+              if (e.target.value.length < 5) {
+                setPassSuccess(false);
+                setPassError("Minimum six character Required");
+              } else {
+                setPassSuccess(true);
+                setPassError("");
+                setPass(e.target.value);
+              }
+            }}
+            type="password"
+            required
+            label={passError || "Password"}
+            size="lg"
+            error={!!passError}
+            success={passSuccess}
+          />
+          <Typography
+            variant="paragraph"
+            className="text-center text-sm bg-gray-200 text-red-500  p-2 rounded-md"
+          >
+            {error?.error ||
+              error?.data ||
+              " Only Registered User Can sign in."}
+          </Typography>
         </CardBody>
         <CardFooter className="pt-0">
-          <Button variant="gradient" fullWidth>
+          <Button onClick={loginHandler} variant="gradient" fullWidth>
             Sign In
           </Button>
-          <Typography variant="small" className="mt-6 flex justify-center">
-            Don't have an account?
-            <Typography
-              as="a"
-              href="#signup"
-              variant="small"
-              color="blue"
-              className="ml-1 font-bold"
-            >
-              Sign up
-            </Typography>
-          </Typography>
         </CardFooter>
       </Card>
     </div>
