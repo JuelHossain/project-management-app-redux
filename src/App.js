@@ -1,13 +1,18 @@
 import { Route, Routes } from "react-router-dom";
+import useAuthCheck from "./hooks/useAuthCheck";
 
 import Login from "./pages/auth/Login";
+import Loading from "./pages/components/Loading";
 import Home from "./pages/home/Home";
 import Projects from "./pages/projects/Projects";
 import Team from "./pages/team/Team";
 
 function App() {
-  return (
-    <div className="App">
+  const authChecked = useAuthCheck();
+  return !authChecked ? (
+    <Loading />
+  ) : (
+    <div>
       <Routes>
         <Route path="/" element={<Home />}>
           <Route index element={<Team />} />
