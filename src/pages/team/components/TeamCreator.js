@@ -9,62 +9,84 @@ import {
   Select,
   Textarea,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import moment from "moment/moment";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import tailColors from "tailwindcss/colors";
+import { useCreateTeamMutation } from "../../../features/team/teamApi";
+import Loading from "../../components/Loading";
 const colors = Object.keys(tailColors).slice(6, 26);
 
 const TeamCreator = ({ open, toggle }) => {
+  console.log(moment().format("MMM D"));
+  const { user } = useSelector((state) => state.auth);
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const [createTeam, { isLoading, isSuccess, error }] = useCreateTeamMutation();
   const [color, setColor] = useState("");
   const [colorError, setColorError] = useState("");
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [about, setAbout] = useState("");
-  const [aboutError, setAboutError] = useState();
-
-  const createHandler = (e) => {
-    e.preventDefault();
-    console.log(color, name, about);
+  const createHandler = (data) => {
+    if (color === "") {
+      setColorError(" Oops,Color is required too");
+    } else {
+      setColorError("");
+      createTeam({
+        ...data,
+        color,
+        members: [user],
+        createdAt: moment().format("MMM D"),
+      });
+    }
   };
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      setColor("");
+      toggle();
+    }
+  }, [isSuccess, toggle,reset]);
   return (
-    <Dialog open={open} handler={toggle}>
-      <form onSubmit={createHandler}>
+    <Dialog open={open} handler={toggle} className="min-w-[320px] max-w-md">
+      <Loading visible={isLoading} />
+      <form onSubmit={handleSubmit(createHandler)}>
         <DialogHeader>Create A Team</DialogHeader>
         <DialogBody className="flex-col gap-2" divider>
           <Input
-            error={!!nameError}
-            onChange={(e) => {
-              const name = e.target.value;
-              if (name === "") {
-                setNameError("Cannot Be empty");
-              } else {
-                setNameError("");
-                if (name.length < 3) {
-                  setNameError("Name is short");
-                } else {
-                  setName(name);
-                }
-              }
-            }}
+            error={!!errors?.name}
+            {...register("name", {
+              required: "Name Is Required",
+              minLength: {
+                value: 3,
+                message: "Name Is Short",
+              },
+            })}
             type={"text"}
-            label={nameError || "Name"}
+            label={errors?.name?.message || "Name"}
           />
           <Textarea
-            error={!!aboutError}
-            value={about}
-            onChange={(e) => {
-              setAbout(e.target.value);
-            }}
+            error={!!errors?.about}
+            {...register("about", {
+              required: "About is required",
+              minLength: {
+                value: 10,
+                message: "Minimum 10 Character Required",
+              },
+            })}
             type={"text"}
-            label={aboutError || "About"}
+            label={errors?.about?.message || "About"}
           />
           <Select
             error={!!colorError}
             placement="bottom-end"
-            autoFocus
             label={colorError || "Select Color"}
             className={` text-${color}-500 capitalize`}
-            value={color}
             onChange={(value) => {
+              setColorError("");
               setColor(value);
             }}
           >
@@ -79,19 +101,22 @@ const TeamCreator = ({ open, toggle }) => {
             ))}
           </Select>
         </DialogBody>
-        <DialogFooter>
-          <Button
-            size="sm"
-            variant="text"
-            color="red"
-            onClick={toggle}
-            className="mr-1"
-          >
-            Cancel
-          </Button>
-          <Button type="submit" size="sm" variant="gradient" color="green">
-            <span>Create</span>
-          </Button>
+        <DialogFooter className="justify-between">
+          <p className="text-red-500 text-xs">{error?.error || error?.data}</p>
+          <div>
+            <Button
+              size="sm"
+              variant="text"
+              color="red"
+              onClick={toggle}
+              className="mr-1"
+            >
+              Cancel
+            </Button>
+            <Button type="submit" size="sm" variant="gradient" color="green">
+              <span>Create</span>
+            </Button>
+          </div>
         </DialogFooter>
       </form>
     </Dialog>

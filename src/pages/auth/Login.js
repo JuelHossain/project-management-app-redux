@@ -7,22 +7,23 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../features/auth/authApi";
 import isValidEmail from "../../utils/isValidEmail";
+import Loading from "../components/Loading";
 import PageContainer from "../components/PageContainer";
 import Unprotected from "./Unprotected";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passError, setPassError] = useState("");
-  const [emailSuccess, setEmailSuccess] = useState(false);
-  const [passSuccess, setPassSuccess] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const [login, { error, isSuccess }] = useLoginMutation();
+  const [login, { error, isSuccess, isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -31,20 +32,18 @@ export default function Login() {
     }
   }, [isSuccess, navigate]);
 
-  const loginHandler = (e) => {
-    e.preventDefault();
-    if (email && pass) {
-      login({ email, password: pass });
-    }
+  const loginHandler = (data) => {
+    login(data);
   };
   return (
     <Unprotected>
       <PageContainer>
         <form
           className="container mx-auto flex justify-center items-center h-screen"
-          onSubmit={loginHandler}
+          onSubmit={handleSubmit(loginHandler)}
         >
           <Card className="w-96">
+            <Loading visible={isLoading} />
             <CardHeader
               variant="gradient"
               color="blue"
@@ -56,40 +55,31 @@ export default function Login() {
             </CardHeader>
             <CardBody className="flex flex-col gap-4">
               <Input
-                onChange={(e) => {
-                  if (isValidEmail(e.target.value)) {
-                    setEmailError("");
-                    setEmailSuccess(true);
-                    setEmail(e.target.value);
-                  } else {
-                    setEmailSuccess(false);
-                    setEmailError("Invalid Email");
-                  }
-                }}
+                {...register("email", {
+                  required: "Email is required",
+                  validate: (value) => {
+                    if (!isValidEmail(value)) {
+                      return "Invalid Email";
+                    }
+                  },
+                })}
                 type="email"
-                required
-                label={emailError || "Email"}
+                label={errors?.email?.message || "Email"}
                 size="lg"
-                error={!!emailError}
-                success={emailSuccess}
+                error={!!errors?.email}
               />
               <Input
-                onChange={(e) => {
-                  if (e.target.value.length < 5) {
-                    setPassSuccess(false);
-                    setPassError("Minimum six character Required");
-                  } else {
-                    setPassSuccess(true);
-                    setPassError("");
-                    setPass(e.target.value);
-                  }
-                }}
+                {...register("password", {
+                  required: "Password is Required",
+                  minLength: {
+                    value: 5,
+                    message: "Minimum 5 Digit Required",
+                  },
+                })}
                 type="password"
-                required
-                label={passError || "Password"}
+                label={errors?.password?.message || "Password"}
                 size="lg"
-                error={!!passError}
-                success={passSuccess}
+                error={!!errors?.password}
               />
               <Typography
                 variant="paragraph"

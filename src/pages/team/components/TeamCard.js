@@ -4,12 +4,13 @@ import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import CardHeader from "../../components/Card/CardHeader";
 
-const TeamCard = () => {
+const TeamCard = ({ team }) => {
+  const { name, about, color, createdAt } = team;
   return (
     <Card>
-      <CardHeader />
-      <CardBody />
-      <CardFooter />
+      <CardHeader color={color} tag={name} />
+      <CardBody text={about} />
+      <CardFooter date={createdAt} />
     </Card>
   );
 };
