@@ -19,7 +19,6 @@ import Loading from "../../components/Loading";
 const colors = Object.keys(tailColors).slice(6, 26);
 
 const TeamCreator = ({ open, toggle }) => {
-  console.log(moment().format("MMM D"));
   const { user } = useSelector((state) => state.auth);
   const {
     handleSubmit,
@@ -39,6 +38,7 @@ const TeamCreator = ({ open, toggle }) => {
         ...data,
         color,
         members: [user],
+        createdBy: user?.email,
         createdAt: moment().format("MMM D"),
       });
     }
@@ -49,9 +49,9 @@ const TeamCreator = ({ open, toggle }) => {
       setColor("");
       toggle();
     }
-  }, [isSuccess, toggle,reset]);
+  }, [isSuccess, toggle, reset]);
   return (
-    <Dialog open={open} handler={toggle} className="min-w-[320px] max-w-md">
+    <Dialog open={open} handler={toggle} className="min-w-[320px] max-w-md ">
       <Loading visible={isLoading} />
       <form onSubmit={handleSubmit(createHandler)}>
         <DialogHeader>Create A Team</DialogHeader>

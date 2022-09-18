@@ -1,3 +1,4 @@
+import { json } from "react-router-dom";
 import { apiSlice } from "../api/apiSlice";
 
 export const teamsApi = apiSlice.injectEndpoints({
@@ -11,6 +12,18 @@ export const teamsApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      onQueryStarted: async (data, { queryFulfilled, dispatch }) => {
+        await queryFulfilled;
+        dispatch(
+          teamsApi.util.updateQueryData(
+            "getTeams",
+            data?.createdBy,
+            (draft) => {
+              draft.push(data);
+            }
+          )
+        );
+      },
     }),
   }),
 });
