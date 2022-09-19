@@ -3,7 +3,7 @@ import { apiSlice } from "../api/apiSlice";
 export const teamsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getTeams: builder.query({
-      query: (email) => `/teams?members.email=${email}`,
+      query: (email) => `/teams?q=${email}`,
     }),
     getTeam: builder.query({
       query: (id) => `/teams/${id}`,
@@ -31,13 +31,13 @@ export const teamsApi = apiSlice.injectEndpoints({
       query: ({ id, data }) => ({
         url: `/teams/${id}`,
         method: "PATCH",
-        data: { data },
+        body: { members: data },
       }),
       onQueryStarted: async ({ id, data }, { dispatch, queryFulfilled }) => {
         // optimistic update
         dispatch(
           teamsApi.util.updateQueryData("getTeam", id, (draft) => {
-            draft.members.push(data);
+            draft.members = data;
           })
         );
       },
@@ -45,4 +45,9 @@ export const teamsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetTeamsQuery, useCreateTeamMutation,useEditTeamMutation } = teamsApi;
+export const {
+  useGetTeamsQuery,
+  useGetTeamQuery,
+  useCreateTeamMutation,
+  useEditTeamMutation,
+} = teamsApi;
