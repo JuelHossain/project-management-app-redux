@@ -3,7 +3,7 @@ import { userLoggedIn } from "./authSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    user: builder.query({
+    getUser: builder.query({
       query: (email) => `/users?email_like=${email}`,
     }),
     register: builder.mutation({
@@ -68,4 +68,5 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useUserQuery } = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetUserQuery } =
+  authApi;

@@ -1,10 +1,12 @@
-import { json } from "react-router-dom";
 import { apiSlice } from "../api/apiSlice";
 
 export const teamsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getTeams: builder.query({
       query: (email) => `/teams?members.email=${email}`,
+    }),
+    getTeam: builder.query({
+      query: (id) => `/teams/${id}`,
     }),
     createTeam: builder.mutation({
       query: (data) => ({
@@ -25,7 +27,22 @@ export const teamsApi = apiSlice.injectEndpoints({
         );
       },
     }),
+    editTeam: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/teams/${id}`,
+        method: "PATCH",
+        data: { data },
+      }),
+      onQueryStarted: async ({ id, data }, { dispatch, queryFulfilled }) => {
+        // optimistic update
+        dispatch(
+          teamsApi.util.updateQueryData("getTeam", id, (draft) => {
+            draft.members.push(data);
+          })
+        );
+      },
+    }),
   }),
 });
 
-export const { useGetTeamsQuery, useCreateTeamMutation } = teamsApi;
+export const { useGetTeamsQuery, useCreateTeamMutation,useEditTeamMutation } = teamsApi;

@@ -5,10 +5,10 @@ import CardFooter from "../../components/Card/CardFooter";
 import CardHeader from "../../components/Card/CardHeader";
 
 const TeamCard = ({ team }) => {
-  const { name, about, color, createdAt } = team;
+  const { about, createdAt } = team;
   return (
     <Card>
-      <CardHeader color={color} tag={name} />
+      <CardHeader team={team} menu />
       <CardBody text={about} />
       <CardFooter date={createdAt} />
     </Card>
