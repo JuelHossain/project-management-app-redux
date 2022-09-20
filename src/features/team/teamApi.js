@@ -14,8 +14,9 @@ export const teamsApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      onQueryStarted: async (data, { queryFulfilled, dispatch }) => {
-        await queryFulfilled;
+      onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
+        const { data } = await queryFulfilled;
+        // pessimistic cache update
         dispatch(
           teamsApi.util.updateQueryData(
             "getTeams",
@@ -31,15 +32,20 @@ export const teamsApi = apiSlice.injectEndpoints({
       query: ({ id, data }) => ({
         url: `/teams/${id}`,
         method: "PATCH",
-        body: { members: data },
+        body: data,
       }),
       onQueryStarted: async ({ id, data }, { dispatch, queryFulfilled }) => {
         // optimistic update
-        dispatch(
+        const patchResult = dispatch(
           teamsApi.util.updateQueryData("getTeam", id, (draft) => {
-            draft.members = data;
+            Object.assign(draft, data);
           })
         );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
       },
     }),
   }),
@@ -50,4 +56,5 @@ export const {
   useGetTeamQuery,
   useCreateTeamMutation,
   useEditTeamMutation,
+  useDeleteTeamMemberMutation,
 } = teamsApi;

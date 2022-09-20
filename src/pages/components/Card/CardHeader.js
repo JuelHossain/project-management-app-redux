@@ -1,12 +1,10 @@
 import { Chip } from "@material-tailwind/react";
 import React from "react";
 
-const CardHeader = ({ Menu, team, project }) => {
-  const { name, color } = team || project || {};
-
+const CardHeader = ({ Menu, name, color }) => {
   return (
     <div className="flex justify-between items-center w-full">
-      <Chip value={name} className={` bg-${color}-100 text-${color}-500`} />
+      <Chip value={name} style={{ backgroundColor: color, color: color,}} />
       {Menu && <Menu />}
     </div>
   );

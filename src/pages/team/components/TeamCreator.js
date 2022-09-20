@@ -13,10 +13,19 @@ import moment from "moment/moment";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import tailColors from "tailwindcss/colors";
 import { useCreateTeamMutation } from "../../../features/team/teamApi";
 import Loading from "../../components/Loading";
-const colors = Object.keys(tailColors).slice(6, 26);
+const colors = [
+  "#D9E3F0",
+  "#F47373",
+  "#697689",
+  "#37D67A",
+  "#2CCCE4",
+  "#555555",
+  "#dce775",
+  "#ff8a65",
+  "#ba68c8",
+];
 
 const TeamCreator = ({ open, toggle }) => {
   const { user } = useSelector((state) => state.auth);
@@ -93,7 +102,7 @@ const TeamCreator = ({ open, toggle }) => {
             {colors.map((color) => (
               <Option
                 key={color}
-                className={`text-${color}-500 hover:text-${color}-500 hover:bg-${color}-100 capitalize`}
+                className={`text-[${color}] hover:text-[${color}] hover:bg-${color}-100 capitalize`}
                 value={color}
               >
                 {color}

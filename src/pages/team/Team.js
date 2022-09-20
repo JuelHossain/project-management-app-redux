@@ -13,13 +13,12 @@ const Team = () => {
   let content;
   if (data?.length > 0) {
     content = data.map((team) => {
-      return <TeamCard key={team.id} team={team} />;
+      return <TeamCard key={team?.id} id={team.id} />;
     });
-  } else {
+  } else if (data?.length === 0) {
     content =
       "You are not a member of any team yet. But you can create your own team .";
-  }
-  if (!!error) {
+  } else if (!!error) {
     content = "Oops, There was some error loading your teams";
   }
   return (
