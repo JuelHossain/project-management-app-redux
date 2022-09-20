@@ -5,16 +5,16 @@ import {
   PopoverHandler,
 } from "@material-tailwind/react";
 import React from "react";
-import { BlockPicker, CirclePicker, SliderPicker, TwitterPicker } from "react-color";
+import { CirclePicker } from "react-color";
 import { useSelector } from "react-redux";
-import tailColors from "tailwindcss/colors";
 import {
+  useDeleteTeamMutation,
   useEditTeamMutation,
   useGetTeamQuery,
 } from "../../../features/team/teamApi";
+import { colors } from "../../../utils/colors";
 import AddMember from "./AddMember";
 import Members from "./Members";
-const colors = Object.keys(tailColors).slice(10, 26);
 
 const TeamMenu = ({ id, status, toggle }) => {
   const myEmail = useSelector((state) => state.auth.user.email);
@@ -22,6 +22,7 @@ const TeamMenu = ({ id, status, toggle }) => {
   const { data: { color, name, createdBy } = {} } = useGetTeamQuery(id);
 
   const [editTeam] = useEditTeamMutation();
+  const [deleteTeam] = useDeleteTeamMutation();
 
   return (
     <Popover
@@ -34,7 +35,11 @@ const TeamMenu = ({ id, status, toggle }) => {
       }}
     >
       <PopoverHandler>
-        <IconButton className="w-7 h-7" variant="text">
+        <IconButton
+          className="w-7 h-7"
+          variant="text"
+          style={{ color: color.color }}
+        >
           <svg
             className="w-3.5 h-3.5 fill-current"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,30 +50,57 @@ const TeamMenu = ({ id, status, toggle }) => {
           </svg>
         </IconButton>
       </PopoverHandler>
-      <PopoverContent className="flex gap-2">
-        <div className="flex flex-col gap-2">
-          <p className={`text-lg text-${color}-500 font-bold`}>Team {name}</p>
+      <PopoverContent className="flex gap-2 flex-col sm:flex-row -ml-3">
+        <div className="flex flex-col gap-2  max-w-[220px]">
+          <div className="flex justify-between">
+            <p className={`text-lg  font-bold`} style={{ color: color.color }}>
+              Team {name}
+            </p>
+            <IconButton
+              className={`w-7 h-7 text-red-500 bg-red-100`}
+              onClick={() => {
+                deleteTeam({ id, email: myEmail });
+              }}
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                ></path>
+              </svg>
+            </IconButton>
+          </div>
           <AddMember id={id} />
           {createdBy === myEmail && (
-            <div className="flex max-w-[200px] flex-wrap gap-1 justify-center items-center">
+            <div
+              className=" p-2 flex border rounded-md"
+              style={{ borderColor: color.backgroundColor }}
+            >
               <CirclePicker
-                onChange={(e) => {
-                  console.log(e);
+                circleSize={18}
+                circleSpacing={8}
+                colors={colors}
+                onChange={(value) => {
+                  const { r, g, b, a } = value.rgb;
+                  const color = {
+                    backgroundColor: `rgb(${r},${g},${b},${0.2})`,
+                    color: `rgb(${r},${g},${b},${a})`,
+                  };
+                  editTeam({ id, data: { color } });
                 }}
               />
-              {/* {colors.map((color) => (
-                <div
-                  key={color}
-                  onClick={() => {
-                    editTeam({ id, data: { color } });
-                  }}
-                  className={`w-5 h-5 bg-${color}-500 rounded-full hover:bg-${color}-700`}
-                ></div>
-              ))} */}
             </div>
           )}
         </div>
-        <div className={`bg-${color}-500 w-0.5`}></div>
+        <div style={{ ...color, width: "1px" }}></div>
         <Members id={id} />
       </PopoverContent>
     </Popover>

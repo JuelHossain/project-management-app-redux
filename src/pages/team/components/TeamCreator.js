@@ -11,34 +11,16 @@ import {
 } from "@material-tailwind/react";
 import moment from "moment/moment";
 import ntc from "ntc";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { CirclePicker } from "react-color";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useCreateTeamMutation } from "../../../features/team/teamApi";
+import { colors } from "../../../utils/colors";
 import Loading from "../../components/Loading";
-const colors = [
-  "#f44336",
-  "#e91e63",
-  "#9c27b0",
-  "#673ab7",
-  "#3f51b5",
-  "#2196f3",
-  "#03a9f4",
-  "#00bcd4",
-  "#009688",
-  "#4caf50",
-  "#8bc34a",
-  "#cddc39",
-  "#ffeb3b",
-  "#ffc107",
-  "#ff9800",
-  "#ff5722",
-  "#795548",
-  "#607d8b",
-];
 
 const TeamCreator = ({ open, toggle }) => {
+  // const colors = Object.keys(colors2).map((key) => colors2?.[key]?.["600"]);
   const { user } = useSelector((state) => state.auth);
   const {
     handleSubmit,
@@ -51,9 +33,7 @@ const TeamCreator = ({ open, toggle }) => {
   const [colorError, setColorError] = useState("");
   const [colorName, setColorName] = useState("");
   const createHandler = (data) => {
-    if (color === "") {
-      setColorError(" Oops,Color is required too");
-    } else {
+    if (color) {
       setColorError("");
       createTeam({
         ...data,
@@ -62,6 +42,8 @@ const TeamCreator = ({ open, toggle }) => {
         createdBy: user?.email,
         createdAt: moment().format("MMM D"),
       });
+    } else {
+      setColorError(" Oops,Color is required too");
     }
   };
   useEffect(() => {
@@ -71,10 +53,7 @@ const TeamCreator = ({ open, toggle }) => {
       toggle();
     }
   }, [isSuccess, toggle, reset]);
-  const colorPickerRef = useRef(null);
-  useEffect(() => {
-    console.log(colorPickerRef.current);
-  }, [colorPickerRef]);
+
   return (
     <Dialog open={open} handler={toggle} className="min-w-[320px] max-w-md ">
       <Loading visible={isLoading} />
@@ -107,18 +86,19 @@ const TeamCreator = ({ open, toggle }) => {
           />
 
           <div className="relative">
-            <Select label="Select A Color">
+            <Select label={colorError || "Select A Color"} error={!!colorError}>
               <Option className="flex justify-center items-center">
                 <CirclePicker
                   colors={colors}
                   circleSize={28}
                   circleSpacing={10}
                   onChange={(value) => {
+                    setColorError("");
                     setColorName(ntc.name(value.hex)[1]);
                     const { r, g, b, a } = value.rgb;
                     const color = {
-                      bgColor: `rgb(${r},${g},${b},${0.2})`,
-                      textColor: `rgb(${r},${g},${b},${a})`,
+                      backgroundColor: `rgb(${r},${g},${b},${0.2})`,
+                      color: `rgb(${r},${g},${b},${a})`,
                     };
                     setColor(color);
                   }}
@@ -128,10 +108,7 @@ const TeamCreator = ({ open, toggle }) => {
             {color && (
               <p
                 className="absolute text-sm top-3 left-3"
-                style={{
-                  color: color.textColor,
-                  backgroundColor: color.bgColor,
-                }}
+                style={{ color: color.color }}
               >
                 {colorName}
               </p>

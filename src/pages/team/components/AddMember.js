@@ -136,6 +136,7 @@ const AddMember = ({ id }) => {
       editTeam({ id, data: { members: [...members, userData] } });
     }
   };
+
   return (
     <form onSubmit={submitHandler} className="relative">
       <Loading visible={usersLoading || teamLoading || adding} />
@@ -150,11 +151,11 @@ const AddMember = ({ id }) => {
         label={"Add Member"}
         icon={
           <IconButton
-            color={color}
             disabled={!userData}
             variant="text"
             size="sm"
-            className="-mt-[5.5px] -ml-[4px]"
+            className="-mt-[5.5px] -ml-[4px] "
+            style={{ ...color }}
             type="submit"
           >
             <svg
@@ -207,7 +208,8 @@ const AddMember = ({ id }) => {
       )}
       {showSuggestion && (
         <div
-          className={`p-2 flex flex-col gap-2 max-h-28 overflow-auto absolute w-full bg-white shadow-md border border-${color}-100 rounded mt-1`}
+          style={{ borderColor: color.backgroundColor }}
+          className={`p-2 flex flex-col gap-2 max-h-28 overflow-auto absolute w-full bg-white shadow-md border rounded mt-1 z-10`}
         >
           {users?.map((user) => {
             if (user.email !== myEmail) {
@@ -219,12 +221,13 @@ const AddMember = ({ id }) => {
                     setShowSuggestion(false);
                   }}
                   key={user.id}
-                  className={`py-1 bg-${color}-100 text-${color}-500 rounded px-3 hover:bg-${color}-200 hover:text-${color}-600 cursor-pointer justify-between flex items-center`}
+                  className={`py-1 px-3 rounded px-3cursor-pointer justify-between flex items-center`}
+                  style={color}
                 >
                   <p> {user?.email}</p>
                   {userExist(user.email) && (
                     <p
-                      className={`text-[10px] rounded px-1 -mr-2 bg-red-100 text-red-400`}
+                      className={`text-[10px] rounded px-1 -mr-2 bg-red-100 text-red-500`}
                     >
                       Member
                     </p>
@@ -233,7 +236,7 @@ const AddMember = ({ id }) => {
               );
             }
             return null;
-          })}
+          }).reverse()}
         </div>
       )}
     </form>

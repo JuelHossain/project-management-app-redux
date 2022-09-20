@@ -21,14 +21,16 @@ const Members = ({ id }) => {
   if (members?.length > 0) {
     membersContent = members?.map((member) => (
       <li
-        className={`py-1 px-3 bg-${color}-100 text-${color}-500 rounded-md flex justify-between gap-3 items-center `}
+        className={`py-1 px-3 rounded-md flex justify-between gap-3 items-center `}
+        style={color}
         key={member.id}
       >
         <Loading visible={membersLoading} />
         <p> {member.email === myEmail ? "You" : member.name}</p>
         {createdBy === myEmail && myEmail !== member.email ? (
           <IconButton
-            className={`-mr-2 w-5 h-5 bg-${color}-900 text-red-500`}
+            className={`-mr-2 w-5 h-5`}
+            style={color}
             onClick={() => {
               const newMembers = members.filter(
                 (existingMember) => existingMember.id !== member.id
@@ -52,9 +54,7 @@ const Members = ({ id }) => {
             </svg>
           </IconButton>
         ) : createdBy === member.email ? (
-          <IconButton
-            className={`-mr-2  w-5 h-5 bg-${color}-900 text-${color}-500`}
-          >
+          <IconButton className={`-mr-2  w-5 h-5 `} style={color}>
             <svg
               className="w-4 h-4"
               fill="none"
@@ -71,9 +71,7 @@ const Members = ({ id }) => {
             </svg>
           </IconButton>
         ) : (
-          <IconButton
-            className={`-mr-2 w-5 h-5 bg-${color}-900 text-${color}-500`}
-          >
+          <IconButton className={`-mr-2 w-5 h-5 `} style={color}>
             <svg
               className="w-4 h-4"
               fill="none"
@@ -107,9 +105,7 @@ const Members = ({ id }) => {
     <ul className="flex gap-1 flex-col flex-shrink-0 ">
       <div className="flex gap-0.5  py-1 ">
         <p>Members</p>
-        <p
-          className={`py-0.5 px-1.5 rounded-md text-xs bg-${color}-100 text-${color}-500`}
-        >
+        <p className={`py-0.5 px-1.5 rounded-md text-xs `} style={color}>
           {members?.length}
         </p>
       </div>

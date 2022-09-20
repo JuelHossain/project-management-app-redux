@@ -18,7 +18,7 @@ const TeamCard = ({ id }) => {
     return (
       <Card>
         <Loading visible={true} />
-        <CardHeader name="Loading..." color="blue" />
+        <CardHeader name="Loading..." />
         <CardBody text="Loading..." />
         <CardFooter date="Loading..." />
       </Card>
@@ -34,7 +34,11 @@ const TeamCard = ({ id }) => {
   }
   return (
     <Card>
-      <CardHeader name={name} color={color} Menu={() => <TeamMenu id={id} status={status} toggle={toggle} />} />
+      <CardHeader
+        name={name}
+        color={color}
+        Menu={() => <TeamMenu id={id} status={status} toggle={toggle} />}
+      />
       <CardBody text={about} />
       <CardFooter date={createdAt} />
     </Card>
