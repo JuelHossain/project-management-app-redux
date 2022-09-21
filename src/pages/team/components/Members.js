@@ -9,7 +9,7 @@ import Loading from "../../components/Loading";
 const Members = ({ id }) => {
   const myEmail = useSelector((state) => state.auth.user.email);
   const {
-    data: { members, color, createdBy } = {},
+    data: { members, color, createdBy: { email: createdBy } } = {},
     isLoading: membersLoading,
     error: membersError,
   } = useGetTeamQuery(id);
@@ -22,7 +22,7 @@ const Members = ({ id }) => {
     membersContent = members?.map((member) => (
       <li
         className={`py-1 px-3 rounded-md flex justify-between gap-3 items-center `}
-        style={color}
+        style={color?.common}
         key={member.id}
       >
         <Loading visible={membersLoading} />
@@ -30,7 +30,7 @@ const Members = ({ id }) => {
         {createdBy === myEmail && myEmail !== member.email ? (
           <IconButton
             className={`-mr-2 w-5 h-5`}
-            style={color}
+            style={{ backgroundColor: color?.["200"], color: color?.["600"] }}
             onClick={() => {
               const newMembers = members.filter(
                 (existingMember) => existingMember.id !== member.id
@@ -54,7 +54,10 @@ const Members = ({ id }) => {
             </svg>
           </IconButton>
         ) : createdBy === member.email ? (
-          <IconButton className={`-mr-2  w-5 h-5 `} style={color}>
+          <IconButton
+            className={`-mr-2  w-5 h-5 `}
+            style={{ backgroundColor: color?.["300"], color: color?.["700"] }}
+          >
             <svg
               className="w-4 h-4"
               fill="none"
@@ -71,7 +74,10 @@ const Members = ({ id }) => {
             </svg>
           </IconButton>
         ) : (
-          <IconButton className={`-mr-2 w-5 h-5 `} style={color}>
+          <IconButton
+            className={`-mr-2 w-5 h-5 `}
+            style={{ backgroundColor: color?.["300"], color: color?.["700"] }}
+          >
             <svg
               className="w-4 h-4"
               fill="none"
@@ -105,7 +111,7 @@ const Members = ({ id }) => {
     <ul className="flex gap-1 flex-col flex-shrink-0 ">
       <div className="flex gap-0.5  py-1 ">
         <p>Members</p>
-        <p className={`py-0.5 px-1.5 rounded-md text-xs `} style={color}>
+        <p className={`py-0.5 px-1.5 rounded-md text-xs `} style={color.common}>
           {members?.length}
         </p>
       </div>

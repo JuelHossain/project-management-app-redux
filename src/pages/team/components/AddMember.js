@@ -20,7 +20,7 @@ const AddMember = ({ id }) => {
   const inputRef = useRef(null);
 
   const {
-    data: { members, color, createdBy } = {},
+    data: { members, color, createdBy: { email: createdBy } } = {},
     isLoading: teamLoading,
     error: teamError,
   } = useGetTeamQuery(id);
@@ -141,6 +141,7 @@ const AddMember = ({ id }) => {
     <form onSubmit={submitHandler} className="relative">
       <Loading visible={usersLoading || teamLoading || adding} />
       <Input
+        color={color?.name}
         disabled={createdBy !== myEmail}
         error={!!error}
         ref={inputRef}
@@ -155,7 +156,7 @@ const AddMember = ({ id }) => {
             variant="text"
             size="sm"
             className="-mt-[5.5px] -ml-[4px] "
-            style={{ ...color }}
+            color={color?.name}
             type="submit"
           >
             <svg
@@ -183,6 +184,7 @@ const AddMember = ({ id }) => {
               onClick={() => {
                 setError("");
                 clearInputField();
+                setSuccess(false);
               }}
               className="-mr-2 w-5 h-5 flex-shrink-0 "
               color="red"
@@ -208,7 +210,7 @@ const AddMember = ({ id }) => {
       )}
       {showSuggestion && (
         <div
-          style={{ borderColor: color.backgroundColor }}
+          style={{ borderColor: color["200"] }}
           className={`p-2 flex flex-col gap-2 max-h-28 overflow-auto absolute w-full bg-white shadow-md border rounded mt-1 z-10`}
         >
           {users?.map((user) => {
@@ -221,13 +223,17 @@ const AddMember = ({ id }) => {
                     setShowSuggestion(false);
                   }}
                   key={user.id}
-                  className={`py-1 px-3 rounded px-3cursor-pointer justify-between flex items-center`}
-                  style={color}
+                  className={`py-1 px-3 rounded px-3cursor-pointer justify-between flex items-center border shadow-sm cursor-pointer`}
+                  style={{ ...color.common, borderColor: color?.["200"] }}
                 >
                   <p> {user?.email}</p>
                   {userExist(user.email) && (
                     <p
-                      className={`text-[10px] rounded px-1 -mr-2 bg-red-100 text-red-500`}
+                      className={`text-[10px] rounded px-1 -mr-2 `}
+                      style={{
+                        backgroundColor: color?.["900"],
+                        color: color?.["50"],
+                      }}
                     >
                       Member
                     </p>
@@ -236,7 +242,7 @@ const AddMember = ({ id }) => {
               );
             }
             return null;
-          }).reverse()}
+          })}
         </div>
       )}
     </form>

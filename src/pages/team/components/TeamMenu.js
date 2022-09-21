@@ -5,7 +5,7 @@ import {
   PopoverHandler,
 } from "@material-tailwind/react";
 import React from "react";
-import { CirclePicker } from "react-color";
+
 import { useSelector } from "react-redux";
 import {
   useDeleteTeamMutation,
@@ -19,7 +19,8 @@ import Members from "./Members";
 const TeamMenu = ({ id, status, toggle }) => {
   const myEmail = useSelector((state) => state.auth.user.email);
 
-  const { data: { color, name, createdBy } = {} } = useGetTeamQuery(id);
+  const { data: { color, name, createdBy: { email: createdBy } } = {} } =
+    useGetTeamQuery(id);
 
   const [editTeam] = useEditTeamMutation();
   const [deleteTeam] = useDeleteTeamMutation();
@@ -35,11 +36,7 @@ const TeamMenu = ({ id, status, toggle }) => {
       }}
     >
       <PopoverHandler>
-        <IconButton
-          className="w-7 h-7"
-          variant="text"
-          style={{ color: color.color }}
-        >
+        <IconButton className="w-7 h-7" variant="text" color={color.name}>
           <svg
             className="w-3.5 h-3.5 fill-current"
             xmlns="http://www.w3.org/2000/svg"
@@ -52,12 +49,17 @@ const TeamMenu = ({ id, status, toggle }) => {
       </PopoverHandler>
       <PopoverContent className="flex gap-2 flex-col sm:flex-row -ml-3">
         <div className="flex flex-col gap-2  max-w-[220px]">
-          <div className="flex justify-between">
-            <p className={`text-lg  font-bold`} style={{ color: color.color }}>
+          <div className="flex justify-between gap-2">
+            <p
+              className={`text-lg  font-bold`}
+              style={{ color: color?.common?.color }}
+            >
               Team {name}
             </p>
             <IconButton
-              className={`w-7 h-7 text-red-500 bg-red-100`}
+              disabled={createdBy !== myEmail}
+              style={{ backgroundColor: color?.["200"], color: color?.["600"] }}
+              className={`w-6 h-6  `}
               onClick={() => {
                 deleteTeam({ id, email: myEmail });
               }}
@@ -81,26 +83,33 @@ const TeamMenu = ({ id, status, toggle }) => {
           <AddMember id={id} />
           {createdBy === myEmail && (
             <div
-              className=" p-2 flex border rounded-md"
-              style={{ borderColor: color.backgroundColor }}
+              className=" p-2 flex border rounded-md flex-wrap gap-1 justify-between"
+              style={{ borderColor: color?.["500"] }}
             >
-              <CirclePicker
-                circleSize={18}
-                circleSpacing={8}
-                colors={colors}
-                onChange={(value) => {
-                  const { r, g, b, a } = value.rgb;
-                  const color = {
-                    backgroundColor: `rgb(${r},${g},${b},${0.2})`,
-                    color: `rgb(${r},${g},${b},${a})`,
-                  };
-                  editTeam({ id, data: { color } });
-                }}
-              />
+              {Object.keys(colors).map((key) => {
+                const color = {
+                  name: key,
+                  ...colors[key],
+                  common: {
+                    backgroundColor: colors[key]["100"],
+                    color: colors[key]["500"],
+                  },
+                };
+                return (
+                  <div
+                    key={key}
+                    onClick={() => {
+                      editTeam({ id, data: { color } });
+                    }}
+                    style={{ backgroundColor: color?.["500"] }}
+                    className={`hover:scale-150 rounded-full capitalize  w-[18px] h-[18px] duration-200 `}
+                  />
+                );
+              })}
             </div>
           )}
         </div>
-        <div style={{ ...color, width: "1px" }}></div>
+        <div style={{ backgroundColor: color?.["500"], width: "1px" }} />
         <Members id={id} />
       </PopoverContent>
     </Popover>

@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: 0,
+  sections: ["backlog", "ready", "doing", "review", "blocked", "done"],
 };
 
 export const projectSlice = createSlice({
-  name: "auth",
+  name: "projects",
   initialState,
   reducers: {},
 });

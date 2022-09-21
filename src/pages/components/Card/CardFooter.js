@@ -2,7 +2,7 @@ import { Avatar } from "@material-tailwind/react";
 import React from "react";
 import { image } from "../../../utils/defaults";
 
-const CardFooter = ({ avatar, date = "Dec 12", user = { name: "Juel" } }) => {
+const CardFooter = ({ avatar, date , user}) => {
   return (
     <div className="flex items-center w-full mt-3 text-xs font-medium text-gray-400 justify-between">
       <div className="flex items-center">

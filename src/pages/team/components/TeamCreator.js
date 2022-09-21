@@ -10,9 +10,7 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import moment from "moment/moment";
-import ntc from "ntc";
 import { useEffect, useState } from "react";
-import { CirclePicker } from "react-color";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useCreateTeamMutation } from "../../../features/team/teamApi";
@@ -20,7 +18,6 @@ import { colors } from "../../../utils/colors";
 import Loading from "../../components/Loading";
 
 const TeamCreator = ({ open, toggle }) => {
-  // const colors = Object.keys(colors2).map((key) => colors2?.[key]?.["600"]);
   const { user } = useSelector((state) => state.auth);
   const {
     handleSubmit,
@@ -31,7 +28,6 @@ const TeamCreator = ({ open, toggle }) => {
   const [createTeam, { isLoading, isSuccess, error }] = useCreateTeamMutation();
   const [color, setColor] = useState(null);
   const [colorError, setColorError] = useState("");
-  const [colorName, setColorName] = useState("");
   const createHandler = (data) => {
     if (color) {
       setColorError("");
@@ -39,7 +35,7 @@ const TeamCreator = ({ open, toggle }) => {
         ...data,
         color,
         members: [user],
-        createdBy: user?.email,
+        createdBy: user,
         createdAt: moment().format("MMM D"),
       });
     } else {
@@ -84,34 +80,48 @@ const TeamCreator = ({ open, toggle }) => {
             type={"text"}
             label={errors?.about?.message || "About"}
           />
-
           <div className="relative">
-            <Select label={colorError || "Select A Color"} error={!!colorError}>
-              <Option className="flex justify-center items-center">
-                <CirclePicker
-                  colors={colors}
-                  circleSize={28}
-                  circleSpacing={10}
-                  onChange={(value) => {
-                    setColorError("");
-                    setColorName(ntc.name(value.hex)[1]);
-                    const { r, g, b, a } = value.rgb;
-                    const color = {
-                      backgroundColor: `rgb(${r},${g},${b},${0.2})`,
-                      color: `rgb(${r},${g},${b},${a})`,
-                    };
-                    setColor(color);
-                  }}
-                />
-              </Option>
+            <Select
+              color={color?.name}
+              label={colorError || "Select A Color"}
+              error={!!colorError}
+              menuProps={{
+                className: "flex flex-wrap gap-2 justify-between items-center",
+              }}
+            >
+              {Object.keys(colors).map((key) => {
+                const color = {
+                  name: key,
+                  ...colors[key],
+                  common: {
+                    backgroundColor: colors[key]["100"],
+                    color: colors[key]["500"],
+                  },
+                };
+                return (
+                  <Option
+                    onClick={() => {
+                      setColor(color);
+                    }}
+                    key={Math.random()}
+                    value={"color"}
+                    style={{
+                      backgroundColor: colors[key]["500"],
+                    }}
+                    className={`text-[0.1px] hover:scale-150 rounded-full capitalize  w-6 h-6 `}
+                  >
+                    <span className="hidden">hidden</span>
+                  </Option>
+                );
+              })}
             </Select>
             {color && (
-              <p
-                className="absolute text-sm top-3 left-3"
-                style={{ color: color.color }}
+              <span
+                className="absolute top-3 left-3.5 capitalize text-sm px-2 rounded z-0"
+                style={color.common}
               >
-                {colorName}
-              </p>
+                {color.name}
+              </span>
             )}
           </div>
         </DialogBody>
