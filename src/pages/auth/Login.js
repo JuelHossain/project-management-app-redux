@@ -83,11 +83,15 @@ export default function Login() {
               />
               <Typography
                 variant="paragraph"
-                className="text-center text-sm bg-gray-200 text-red-500  p-2 rounded-md"
+                className={`${
+                  error
+                    ? " bg-red-50 text-red-500"
+                    : " bg-green-50 text-green-500"
+                } text-center text-sm  p-2 rounded-md`}
               >
-                {error?.error ||
-                  error?.data ||
-                  " Only Registered User Can sign in."}
+                {error
+                  ? "There was a Server Side Error"
+                  : " Only Registered User Can sign in."}
               </Typography>
             </CardBody>
             <CardFooter className="pt-0">

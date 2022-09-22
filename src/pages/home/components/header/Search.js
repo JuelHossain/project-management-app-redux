@@ -1,6 +1,25 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { setSearch } from "../../../../features/projects/projectsSlice";
 
 const Search = ({ match }) => {
+  const dispatch = useDispatch();
+  const debounceHandler = (fn, delay) => {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  };
+
+  const doSearch = (value) => {
+    dispatch(setSearch(value));
+  };
+
+  const handleSearch = debounceHandler(doSearch, 500);
+
   return (
     match && (
       <input
@@ -9,6 +28,7 @@ const Search = ({ match }) => {
         variant="outlined"
         type="search"
         placeholder="Search for projects..."
+        onChange={(e) => handleSearch(e.target.value)}
       />
     )
   );

@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDrag } from "react-dnd";
-import { useEditProjectMutation } from "../../../features/projects/projectsApi";
+import { useSelector } from "react-redux";
+import { useStageProjectMutation } from "../../../features/projects/projectsApi";
+import { selectSearch } from "../../../features/projects/projectSelectors";
 
-const Card = ({ id, children, ...props }) => {
+const Card = ({ data, children, ...props }) => {
+  const search = useSelector(selectSearch);
+  const [matched, setMatched] = useState(false);
+  useEffect(() => {
+    if (search === "") {
+      setMatched(false);
+    } else {
+      if (data?.title.includes(search)) {
+        setMatched(true);
+      } else {
+        setMatched(false);
+      }
+    }
+  }, [search, data]);
 
-  const [editProject] = useEditProjectMutation();
-  const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
+  const [stageProject] = useStageProjectMutation();
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: "BOX",
-    item: { id },
+    item: { id: data?.id },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        editProject({ id, data: { section: dropResult.name } });
+        if (dropResult.name !== data.section) {
+          stageProject({
+            data,
+            patch: { section: dropResult.name },
+          });
+        }
       }
     },
 
@@ -25,7 +45,13 @@ const Card = ({ id, children, ...props }) => {
     <div
       ref={drag}
       {...props}
-      className="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100 whitespace-normal "
+      className={`relative flex flex-col items-start p-4 mt-3  rounded-lg cursor-pointer  whitespace-normal hover:shadow-lg  ${
+        isDragging && "opacity-0"
+      } ${
+        matched
+          ? "border-2 shadow-lg border-blue-500 bg-blue-50/80"
+          : " bg-white/80 border shadow-mds"
+      }`}
       draggable="true"
     >
       {children}

@@ -1,5 +1,6 @@
 import { IconButton } from "@material-tailwind/react";
 import React from "react";
+import ScrollBar from "react-perfect-scrollbar";
 import { useSelector } from "react-redux";
 import {
   useEditTeamMutation,
@@ -115,9 +116,9 @@ const Members = ({ id }) => {
           {members?.length}
         </p>
       </div>
-      <div className=" space-y-1 max-h-[125px] overflow-auto pr-2 ">
+      <ScrollBar className=" space-y-1 max-h-[125px] overflow-auto pr-2 ">
         {membersContent}
-      </div>
+      </ScrollBar>
     </ul>
   );
 };

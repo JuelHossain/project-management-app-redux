@@ -1,10 +1,12 @@
-import React from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 const ProjectContainer = ({ children, ...props }) => {
   return (
-    <div {...props} className="flex flex-col pb-2 overflow-auto">
-      {children}
-    </div>
+    children && (
+      <PerfectScrollbar {...props} className="flex flex-col pb-2 overflow-auto">
+        {children}
+      </PerfectScrollbar>
+    )
   );
 };
 

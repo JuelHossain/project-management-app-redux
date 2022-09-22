@@ -1,4 +1,6 @@
+import { useSelector } from "react-redux";
 import { useGetProjectQuery } from "../../../../features/projects/projectsApi";
+import { selectSearch } from "../../../../features/projects/projectSelectors";
 import Card from "../../../components/Card/Card";
 import CardBody from "../../../components/Card/CardBody";
 import CardFooter from "../../../components/Card/CardFooter";
@@ -7,17 +9,15 @@ import Loading from "../../../components/Loading";
 import ProjectMenu from "./ProjectMenu";
 
 const ProjectCard = ({ id }) => {
+  const { data, isLoading, error } = useGetProjectQuery(id);
+
   const {
-    data: {
-      title,
-      createdAt,
-      createdBy,
-      section,
-      team: { name, color } = {},
-    } = {},
-    isLoading,
-    error,
-  } = useGetProjectQuery(id);
+    title,
+    createdAt,
+    createdBy,
+    section,
+    team: { name, color } = {},
+  } = data ?? {};
 
   if (isLoading) {
     return (
@@ -38,7 +38,7 @@ const ProjectCard = ({ id }) => {
     );
   }
   return (
-    <Card id={id}>
+    <Card id={id} data={data}>
       <CardHeader
         name={name}
         color={color}

@@ -1,10 +1,10 @@
-import React from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 const SectionContainer = ({ children }) => {
   return (
-    <div className="flex flex-grow px-10 mt-4 space-x-6 overflow-auto">
+    <PerfectScrollbar className=" flex flex-grow px-10 mt-4 overflow-auto gap-4">
       {children}
-    </div>
+    </PerfectScrollbar>
   );
 };
 

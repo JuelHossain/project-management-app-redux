@@ -4,9 +4,6 @@ export const projectsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query({
       query: (section) => `/projects?section=${section}`,
-      providesTags: (result, error, section) => {
-        return [{ type: "getProjects", id: section }];
-      },
     }),
     getProject: builder.query({
       query: (id) => `/projects/${id}`,
@@ -19,17 +16,19 @@ export const projectsApi = apiSlice.injectEndpoints({
       }),
 
       onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
-        const { data } = await queryFulfilled;
-        // pessimistic update
-        dispatch(
-          projectsApi.util.updateQueryData(
-            "getProjects",
-            data?.section,
-            (draft) => {
-              draft.push(data);
-            }
-          )
-        );
+        try {
+          const { data } = await queryFulfilled;
+          // pessimistic update
+          dispatch(
+            projectsApi.util.updateQueryData(
+              "getProjects",
+              data?.section,
+              (draft) => {
+                draft.push(data);
+              }
+            )
+          );
+        } catch {}
       },
     }),
     editProject: builder.mutation({
@@ -38,10 +37,7 @@ export const projectsApi = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { id, data }) => {
 
-        return [{ type: "getProjects", id: data.section }];
-      },
       onQueryStarted: async ({ id, data }, { dispatch, queryFulfilled }) => {
         // optimistic cache update
         const patchResult = dispatch(
@@ -49,10 +45,55 @@ export const projectsApi = apiSlice.injectEndpoints({
             Object.assign(draft, data);
           })
         );
+
         try {
           await queryFulfilled;
         } catch {
           patchResult.undo();
+        }
+      },
+    }),
+    stageProject: builder.mutation({
+      query: ({ data, patch }) => ({
+        url: `/projects/${data.id}`,
+        method: "PATCH",
+        body: patch,
+      }),
+
+      onQueryStarted: async ({ data, patch }, { dispatch, queryFulfilled }) => {
+        // optimistic cache update
+        const putResult = dispatch(
+          projectsApi.util.updateQueryData("getProject", data.id, (draft) => {
+            return { ...data, ...patch };
+          })
+        );
+
+        // optimistic cache update of project dropped section
+        const pushResult = dispatch(
+          projectsApi.util.updateQueryData(
+            "getProjects",
+            patch.section,
+            (draft) => {
+              return [...draft, { ...data, ...patch }];
+            }
+          )
+        );
+        // optimistic cache update of project drag section
+        const popResult = dispatch(
+          projectsApi.util.updateQueryData(
+            "getProjects",
+            data.section,
+            (draft) => {
+              return draft.filter((project) => project.id !== data.id);
+            }
+          )
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          putResult.undo();
+          pushResult.undo();
+          popResult.undo();
         }
       },
     }),
@@ -84,4 +125,5 @@ export const {
   useCreateProjectMutation,
   useEditProjectMutation,
   useDeleteProjectMutation,
+  useStageProjectMutation,
 } = projectsApi;
