@@ -9,26 +9,28 @@ import {
   MenuItem,
   MenuList,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import { userLoggedOut } from "../../../../features/auth/authSlice";
 import { image } from "../../../../utils/defaults";
 
 const UserNav = () => {
   const user = useSelector((state) => state.auth.user);
-
   const dispatch = useDispatch();
   const logout = () => {
     dispatch(userLoggedOut());
   };
+  const navigate = useNavigate();
+  const match = useMatch("/users");
   return (
     <>
       <div className=" items-center gap-2 flex-shrink-0 hidden sm:flex">
         <Button
           size="sm"
-          variant="outlined"
+          variant={match ? "filled" : "outlined"}
           className="flex items-center gap-2"
-          as={Link}
-          to="/dashboard"
+          onClick={() => {
+            navigate("/users");
+          }}
         >
           <Avatar
             className="hidden sm:flex w-4 h-4"
@@ -38,7 +40,11 @@ const UserNav = () => {
           />
           {user?.name}
         </Button>
-        <IconButton size="sm" variant="outlined" onClick={logout}>
+        <IconButton
+          size="sm"
+          variant={match ? "filled" : "outlined"}
+          onClick={logout}
+        >
           <svg
             className="w-6 h-6"
             fill="none"

@@ -3,6 +3,9 @@ import { userLoggedIn } from "./authSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getUsers: builder.query({
+      query: () => "/users",
+    }),
     getUser: builder.query({
       query: (email) => `/users?email_like=${email}`,
     }),
@@ -68,5 +71,9 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetUserQuery } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetUserQuery,
+  useGetUsersQuery,
+} = authApi;

@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
 import { useGetProjectQuery } from "../../../../features/projects/projectsApi";
-import { selectSearch } from "../../../../features/projects/projectSelectors";
+
 import Card from "../../../components/Card/Card";
 import CardBody from "../../../components/Card/CardBody";
 import CardFooter from "../../../components/Card/CardFooter";
@@ -21,7 +20,7 @@ const ProjectCard = ({ id }) => {
 
   if (isLoading) {
     return (
-      <div>
+      <div className="relative flex flex-col items-start p-4 mt-3  rounded-lg">
         <Loading visible={true} />
         <CardHeader name="Loading..." />
         <CardBody text="Loading..." />

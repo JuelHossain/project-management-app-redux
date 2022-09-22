@@ -59,14 +59,25 @@ const ProjectCreator = ({ open, toggle }) => {
       reset();
       toggle();
     }
-  }, [created, reset, toggle]);
+    if (!open) {
+      setSelectedTeam("");
+    }
+  }, [created, reset, open, toggle]);
 
   return (
-    <Dialog open={open} handler={toggle} className="min-w-[320px] max-w-md ">
+    <Dialog
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 },
+      }}
+      open={open}
+      handler={toggle}
+      className="min-w-[320px] max-w-md "
+    >
       <Loading visible={creating || gettingTeams} />
       <form onSubmit={handleSubmit(createHandler)}>
         <DialogHeader>Create A Project</DialogHeader>
-        <DialogBody className="flex-col gap-2" divider>
+        <DialogBody className="flex-col gap-2">
           <Textarea
             error={!!errors?.title}
             {...register("title", {
@@ -96,10 +107,7 @@ const ProjectCreator = ({ open, toggle }) => {
                         setSelectedTeam(team);
                       }}
                       key={team.id}
-                      style={{
-                        backgroundColor: team.color["500"],
-                        color: team.color["50"],
-                      }}
+                      style={team.color.common}
                       className={`flex-grow  text-center text-sm py-1 px-3 hover:scale-105 rounded-md capitalize border flex-shrink-0`}
                     >
                       <span>{team?.name}</span>
@@ -110,10 +118,7 @@ const ProjectCreator = ({ open, toggle }) => {
             {selectedTeam && (
               <span
                 className="absolute top-[10px] left-3 capitalize text-sm px-2 rounded z-0 py-0.5"
-                style={{
-                  backgroundColor: selectedTeam.color["500"],
-                  color: selectedTeam.color["50"],
-                }}
+                style={selectedTeam.color.common}
               >
                 {selectedTeam.name}
               </span>

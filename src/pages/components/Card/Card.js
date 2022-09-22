@@ -45,7 +45,7 @@ const Card = ({ data, children, ...props }) => {
     <div
       ref={drag}
       {...props}
-      className={`relative flex flex-col items-start p-4 mt-3  rounded-lg cursor-pointer  whitespace-normal hover:shadow-lg  ${
+      className={`relative flex flex-col items-start p-4   rounded-lg cursor-pointer  whitespace-normal hover:shadow-lg  ${
         isDragging && "opacity-0"
       } ${
         matched

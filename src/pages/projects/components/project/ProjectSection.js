@@ -3,12 +3,27 @@ import Section from "../section/Section";
 import ProjectCard from "./ProjectCard";
 
 import { useGetProjectsQuery } from "../../../../features/projects/projectsApi";
+import Loading from "../../../components/Loading";
 import SectionHeader from "../section/SectionHeader";
 import ProjectContainer from "./ProjectContainer";
 
 const ProjectSection = ({ section }) => {
-  const { data: projects } = useGetProjectsQuery(section);
+  const {
+    data: projects,
+    isLoading: gettingProjects,
+    error: projectError,
+  } = useGetProjectsQuery(section, { refetchOnFocus: true });
 
+  let content;
+  if (gettingProjects) {
+    content = <Loading visible={true} />;
+  } else if (projectError) {
+    content = <div>There was some error getting {section} project</div>;
+  } else if (projects.length > 0) {
+    content = projects?.map((project) => (
+      <ProjectCard key={project.id} id={project.id} />
+    ));
+  }
   return (
     <Section section={section}>
       <SectionHeader
@@ -16,11 +31,7 @@ const ProjectSection = ({ section }) => {
         name={section}
         add={section === "backlog" && true}
       />
-      <ProjectContainer>
-        {projects?.map((project) => (
-          <ProjectCard key={project.id} id={project.id} />
-        ))}
-      </ProjectContainer>
+      <ProjectContainer>{content}</ProjectContainer>
     </Section>
   );
 };

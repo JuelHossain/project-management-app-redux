@@ -7,7 +7,7 @@ import Header from "./components/header/Header";
 const Home = () => {
   return (
     <Protected>
-      <div className="h-screen flex flex-col w-screen overflow-auto">
+      <div className="h-screen flex flex-col w-screen overflow-auto justify-between">
         <Header />
         <Outlet />
         <Footer />

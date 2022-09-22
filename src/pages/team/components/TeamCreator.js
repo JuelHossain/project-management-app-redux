@@ -13,19 +13,33 @@ import moment from "moment/moment";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useCreateTeamMutation } from "../../../features/team/teamApi";
+import {
+  useCreateTeamMutation,
+  useGetTeamsQuery,
+} from "../../../features/team/teamApi";
 import { colors } from "../../../utils/colors";
 import Loading from "../../components/Loading";
 
 const TeamCreator = ({ open, toggle }) => {
   const { user } = useSelector((state) => state.auth);
+  const { data: teams } = useGetTeamsQuery("");
+  // team exist or not
+  const isExist = (name) => {
+    const team = teams?.filter((team) => {
+      if (team.name === name) return true;
+      else return false;
+    });
+    if (team.length > 0) return true;
+    else return false;
+  };
+
+  const [createTeam, { isLoading, isSuccess, error }] = useCreateTeamMutation();
   const {
     handleSubmit,
     register,
     reset,
     formState: { errors },
   } = useForm();
-  const [createTeam, { isLoading, isSuccess, error }] = useCreateTeamMutation();
   const [color, setColor] = useState(null);
   const [colorError, setColorError] = useState("");
   const createHandler = (data) => {
@@ -48,14 +62,25 @@ const TeamCreator = ({ open, toggle }) => {
       setColor("");
       toggle();
     }
-  }, [isSuccess, toggle, reset]);
+    if (!open) {
+      setColor("");
+    }
+  }, [isSuccess, open, toggle, reset]);
 
   return (
-    <Dialog open={open} handler={toggle} className="min-w-[320px] max-w-md ">
+    <Dialog
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 },
+      }}
+      open={open}
+      handler={toggle}
+      className="min-w-[320px] max-w-md "
+    >
       <Loading visible={isLoading} />
       <form onSubmit={handleSubmit(createHandler)}>
         <DialogHeader>Create A Team</DialogHeader>
-        <DialogBody className="flex-col gap-2" divider>
+        <DialogBody className="flex-col gap-2">
           <Input
             error={!!errors?.name}
             {...register("name", {
@@ -64,6 +89,7 @@ const TeamCreator = ({ open, toggle }) => {
                 value: 3,
                 message: "Name Is Short",
               },
+              validate: (value) => !isExist(value) || "Team Already Exists",
             })}
             type={"text"}
             label={errors?.name?.message || "Name"}
