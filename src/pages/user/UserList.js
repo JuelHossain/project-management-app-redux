@@ -12,7 +12,7 @@ import { image } from "../../utils/defaults";
 const UserList = ({ user, setDeletedUser, deleteUser }) => {
   const [open, toggle] = useReducer((state) => !state, false);
   return (
-    <div className="flex gap-2 bg-blue-100/50 hover:bg-blue-200/50 rounded-md py-1 px-2 justify-between items-center">
+    <div className="flex gap-2 bg-blue-200/50 hover:bg-blue-300/50 rounded-md py-1 px-2 justify-between items-center">
       <div className="flex gap-2 items-center">
         <Avatar
           src={image(user.name)}

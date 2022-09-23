@@ -1,6 +1,13 @@
-import { Alert, Card, CardBody } from "@material-tailwind/react";
+import {
+  Alert,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+} from "@material-tailwind/react";
 import ScrollBar from "react-perfect-scrollbar";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useGetUserProjectsQuery } from "../../features/projects/projectsApi";
 import Loading from "../components/Loading";
 
@@ -21,74 +28,58 @@ const UserProjects = () => {
     content = projects?.map((project) => (
       <div
         key={project.id}
-        className="flex p-2 items-center rounded-md bg-blue-100/50 hover:bg-blue-200/50 justify-between gap-2 "
+        className="flex p-2  rounded-md bg-blue-200/50 hover:bg-blue-300/50  gap-2  "
       >
-        <div className="flex items-center gap-2 flex-wrap ">
-          <p className="py-0.5 px-2 rounded-md bg-blue-500 text-white">
-            {project.team.name}
-          </p>
-          <p className="py-0.5 px-2 rounded-md bg-gray-500/50 ">
-            {project.title}
-          </p>
+        <div className="p-2 bg-blue-500 text-white rounded-md flex items-center">
+          <svg
+            class="w-6 h-6"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M2 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V4zM8 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1H9a1 1 0 01-1-1V4zM15 3a1 1 0 00-1 1v12a1 1 0 001 1h2a1 1 0 001-1V4a1 1 0 00-1-1h-2z"></path>
+          </svg>
         </div>
-        <div className="flex gap-2 items-center">
-          <p className="py-0.5 px-2 rounded-md bg-green-200">
-            {project.section}
-          </p>
+        <div className="gap-1 flex flex-col items-start ">
+          <div className="flex  gap-2 text-xs ">
+            <p className="py-0.5 px-2 rounded-md bg-blue-500 text-white">
+              {project.team.name}
+            </p>
+            <p className="py-0.5 px-2 rounded-md bg-green-500 text-white">
+              {project.section}
+            </p>
+          </div>
+          <p>{project.title}</p>
         </div>
       </div>
     ));
   } else {
     content = <Alert color="green">You have not created any project yet</Alert>;
   }
+
+  const navigate = useNavigate();
   return (
-    <Card className="bg-white/80 flex-1 ">
+    <Card className="bg-white/80 flex-1">
       <Loading visible={gettingProjects} />
 
-      <CardBody className="flex flex-col gap-4 max-h-[500px] ">
+      <CardBody className="flex flex-col gap-4  overflow-auto  max-h-[425px]">
         <div>
           <h4 className="text-2xl font-bold text-center">
             Projects You Have Created
           </h4>
         </div>
         <ScrollBar className="space-y-2 ">{content}</ScrollBar>
-        {/* {(deleteError || deleted) && (
-          <div
-            className={`p-2 rounded-md  flex justify-between items-center ${
-              deleted ? "bg-green-100 tex-green-500" : "bg-red-100 text-red-500"
-            }`}
-          >
-            <p className="text-sm">
-              {deleted
-                ? `${deletedproject} Deleted Successfully`
-                : " There was some error Deleting project"}
-            </p>
-            <IconButton
-              className="w-5 h-5"
-              variant="text"
-              color={deleted ? "green" : "red"}
-              onClick={() => {
-                reset();
-              }}
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </IconButton>
-          </div>
-        )} */}
       </CardBody>
+      <CardFooter className="pt-0">
+        <Button
+          fullWidth
+          onClick={() => {
+            navigate("/projects");
+          }}
+        >
+          See All Projects
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

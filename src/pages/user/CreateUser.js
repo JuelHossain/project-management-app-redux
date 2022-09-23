@@ -1,10 +1,10 @@
 import {
+  Alert,
   Button,
   Card,
   CardBody,
   CardFooter,
   Input,
-  Typography,
 } from "@material-tailwind/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -81,21 +81,14 @@ export default function CreateUser() {
             label={"Password"}
             size="lg"
           />
-          {error ||
-            (isSuccess && (
-              <Typography
-                variant="paragraph"
-                className={`${
-                  error
-                    ? " bg-red-50 text-red-500"
-                    : " bg-green-50 text-green-500"
-                } text-center text-sm  p-2 rounded-md`}
-              >
-                {error
-                  ? "There was a Error Creating User"
-                  : "User Created Successfully"}
-              </Typography>
-            ))}
+
+          <Alert
+            show={error || isSuccess}
+            color={error ? "red" : "green"}
+            className={` text-center text-sm  p-2 rounded-md`}
+          >
+            {!!error ? error.error || error.data : "User Created Successfully"}
+          </Alert>
         </CardBody>
         <CardFooter className="pt-0">
           <Button type="submit" variant="gradient" fullWidth>

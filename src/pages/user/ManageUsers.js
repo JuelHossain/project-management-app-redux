@@ -35,7 +35,7 @@ const ManageUsers = () => {
       (user) =>
         !user.admin && (
           <UserList
-            key={user.email}
+            key={Math.random()}
             user={user}
             setDeletedUser={setDeletedUser}
             deleteUser={deleteUser}
@@ -49,10 +49,9 @@ const ManageUsers = () => {
     <Card className="bg-white/80 flex-1 ">
       <Loading visible={gettingUsers || deleting} />
 
-      <CardBody className="flex flex-col gap-4   overflow-auto  max-h-[500px]">
-        <div>
-          <h4 className="text-2xl font-bold text-center">Manage Users</h4>
-        </div>
+      <CardBody className="flex flex-col gap-4  max-h-[323px]  overflow-auto ">
+        <h4 className="text-2xl font-bold text-center">Manage Users</h4>
+
         <ScrollBar className="space-y-2">{content}</ScrollBar>
         {(deleteError || deleted) && (
           <div
