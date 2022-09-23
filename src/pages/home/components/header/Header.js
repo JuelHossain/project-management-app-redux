@@ -1,6 +1,5 @@
 // import { useEffect, useState } from "react";
 import { useMatch } from "react-router-dom";
-import Loading from "../../../components/Loading";
 import Logo from "./Logo";
 import NavList from "./NavList";
 import Search from "./Search";
@@ -14,14 +13,17 @@ export default function Header() {
         match && "flex-col gap-2 md:flex-row"
       } `}
     >
-      <div className="flex gap-2 items-center">
-        <Logo />
-        <NavList />
+      <div className=" justify-between flex gap-2 w-full">
+        <div className="flex gap-2 items-center">
+          <Logo />
+          <NavList />
+        </div>
+        <div className="flex gap-2 items-center">
+          <Search match={match} cls={"hidden sm:flex"} />
+          <UserNav />
+        </div>
       </div>
-      <div className="flex gap-2 items-center ">
-        <Search match={match} />
-        <UserNav />
-      </div>
+      <Search match={match} cls={"sm:hidden"} />
     </div>
   );
 }

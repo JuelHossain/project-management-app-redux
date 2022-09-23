@@ -9,32 +9,23 @@ export const authApi = apiSlice.injectEndpoints({
     getUser: builder.query({
       query: (email) => `/users?email_like=${email}`,
     }),
-    register: builder.mutation({
+    createUser: builder.mutation({
       query: (data) => ({
         url: "/register",
         method: "POST",
         body: data,
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onQueryStarted(data, { queryFulfilled, dispatch }) {
+        // optimistic update
+        const createResult = dispatch(
+          authApi.util.updateQueryData("getUsers", undefined, (draft) => {
+            draft.push(data);
+          })
+        );
         try {
-          const result = await queryFulfilled;
-
-          localStorage.setItem(
-            "auth",
-            JSON.stringify({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
-            })
-          );
-
-          dispatch(
-            userLoggedIn({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
-            })
-          );
+          await queryFulfilled;
         } catch (err) {
-          // do nothing
+          createResult.undo();
         }
       },
     }),
@@ -68,12 +59,32 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    deleteUser: builder.mutation({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+      onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
+        // optimist cache update
+        const deleteResult = dispatch(
+          authApi.util.updateQueryData("getUsers", undefined, (draft) => {
+            return draft.filter((user) => user.id !== id);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          deleteResult.undo();
+        }
+      },
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
-  useRegisterMutation,
+  useCreateUserMutation,
   useGetUserQuery,
   useGetUsersQuery,
+  useDeleteUserMutation,
 } = authApi;

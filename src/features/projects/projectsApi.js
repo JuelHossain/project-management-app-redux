@@ -5,6 +5,9 @@ export const projectsApi = apiSlice.injectEndpoints({
     getProjects: builder.query({
       query: (section) => `/projects?section=${section}`,
     }),
+    getUserProjects: builder.query({
+      query: (userEmail) => `/projects?createdBy.email=${userEmail}`,
+    }),
     getProject: builder.query({
       query: (id) => `/projects/${id}`,
     }),
@@ -126,4 +129,5 @@ export const {
   useEditProjectMutation,
   useDeleteProjectMutation,
   useStageProjectMutation,
+  useGetUserProjectsQuery,
 } = projectsApi;

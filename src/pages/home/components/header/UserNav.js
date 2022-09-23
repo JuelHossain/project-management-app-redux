@@ -20,16 +20,16 @@ const UserNav = () => {
     dispatch(userLoggedOut());
   };
   const navigate = useNavigate();
-  const match = useMatch("/users");
+  const match = useMatch("/dashboard");
   return (
     <>
-      <div className=" items-center gap-2 flex-shrink-0 hidden sm:flex">
+      <div className=" items-center gap-2 flex-shrink-0 hidden md:flex">
         <Button
           size="sm"
           variant={match ? "filled" : "outlined"}
           className="flex items-center gap-2"
           onClick={() => {
-            navigate("/users");
+            navigate("/dashboard");
           }}
         >
           <Avatar
@@ -70,7 +70,7 @@ const UserNav = () => {
       >
         <MenuHandler>
           <Avatar
-            className="sm:hidden"
+            className="md:hidden"
             size="sm"
             variant="circular"
             src={image(user?.name)}
@@ -79,7 +79,9 @@ const UserNav = () => {
         <MenuList className="space-y-1">
           <MenuItem
             className="flex items-center gap-2 bg-blue-500/20 text-blue-500 hover:bg-blue-700/50 hover:text-blue-900"
-            to="/dashboard"
+            onClick={() => {
+              navigate("/dashboard");
+            }}
           >
             <img src={image(user?.name)} alt={user?.name} className="w-5 h-5" />
             {user?.name}

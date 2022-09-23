@@ -59,10 +59,12 @@ const ProjectCreator = ({ open, toggle }) => {
       reset();
       toggle();
     }
+  }, [created, reset, toggle]);
+  useEffect(() => {
     if (!open) {
       setSelectedTeam("");
     }
-  }, [created, reset, open, toggle]);
+  }, [open]);
 
   return (
     <Dialog
@@ -127,7 +129,10 @@ const ProjectCreator = ({ open, toggle }) => {
         </DialogBody>
         <DialogFooter className="justify-between">
           <p className="text-red-500 text-xs">
-            {creatingError?.error || creatingError?.data}
+            {creatingError?.error ||
+              creatingError?.data ||
+              teamsError?.error ||
+              teamsError?.data}
           </p>
           <div>
             <Button

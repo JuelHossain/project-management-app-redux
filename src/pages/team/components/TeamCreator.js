@@ -62,10 +62,12 @@ const TeamCreator = ({ open, toggle }) => {
       setColor("");
       toggle();
     }
+  }, [isSuccess, toggle, reset]);
+  useEffect(() => {
     if (!open) {
       setColor("");
     }
-  }, [isSuccess, open, toggle, reset]);
+  }, [open]);
 
   return (
     <Dialog
@@ -75,7 +77,7 @@ const TeamCreator = ({ open, toggle }) => {
       }}
       open={open}
       handler={toggle}
-      className="min-w-[320px] max-w-md "
+      className="min-w-[340px] max-w-md "
     >
       <Loading visible={isLoading} />
       <form onSubmit={handleSubmit(createHandler)}>

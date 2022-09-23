@@ -18,6 +18,7 @@ const NavList = () => {
     <div className="flex gap-2">
       {navLink.map((link) => (
         <Button
+          className="flex-grow"
           onClick={() => {
             navigate(link?.link);
           }}
