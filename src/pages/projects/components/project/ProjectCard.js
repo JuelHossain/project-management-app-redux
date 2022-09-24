@@ -1,4 +1,3 @@
-import { useReducer } from "react";
 import { useGetProjectQuery } from "../../../../features/projects/projectsApi";
 
 import Card from "../../../components/Card/Card";
@@ -10,7 +9,6 @@ import ProjectMenu from "./ProjectMenu";
 
 const ProjectCard = ({ id }) => {
   const { data, isLoading, error } = useGetProjectQuery(id);
-
 
   const {
     title,
@@ -44,11 +42,7 @@ const ProjectCard = ({ id }) => {
       <CardHeader
         name={name}
         color={color}
-        Menu={() =>
-          section === "backlog" && (
-            <ProjectMenu id={id} color={color}  />
-          )
-        }
+        Menu={() => <ProjectMenu id={id} color={color} />}
       />
       <CardBody text={title} />
       <CardFooter user={createdBy} date={createdAt} avatar />

@@ -5,9 +5,10 @@ import {
   PopoverContent,
   PopoverHandler,
 } from "@material-tailwind/react";
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 
 import { useSelector } from "react-redux";
+import { useGetProjectByTeamQuery } from "../../../features/projects/projectsApi";
 import {
   useDeleteTeamMutation,
   useEditTeamMutation,
@@ -18,10 +19,12 @@ import AddMember from "./AddMember";
 import Members from "./Members";
 
 const TeamMenu = ({ id, status, toggle }) => {
+  const [error, setError] = useState("");
   const myEmail = useSelector((state) => state.auth.user.email);
 
   const { data: { color, name, createdBy: { email: createdBy } } = {} } =
     useGetTeamQuery(id);
+  const { data: projectsOfThisTeam } = useGetProjectByTeamQuery(id);
 
   const [editTeam] = useEditTeamMutation();
   const [deleteTeam] = useDeleteTeamMutation();
@@ -67,7 +70,23 @@ const TeamMenu = ({ id, status, toggle }) => {
                 unmount: { scale: 0, y: 25 },
               }}
             >
-              <PopoverHandler>
+              <PopoverHandler
+                onClick={() => {
+                  if (projectsOfThisTeam?.length > 0) {
+                  }
+                  setError(
+                    `There is ${
+                      projectsOfThisTeam?.length
+                    } project of this team going on ${
+                      projectsOfThisTeam?.some(
+                        (project) => project.section !== "backlog"
+                      )
+                        ? "and some of the projects is already started so You cannot delete this team now"
+                        : "and all projects is in backlog stage if you delete this team the projects will be deleted too."
+                    }`
+                  );
+                }}
+              >
                 <IconButton
                   disabled={createdBy !== myEmail}
                   style={{
@@ -95,27 +114,38 @@ const TeamMenu = ({ id, status, toggle }) => {
               <PopoverContent className="-mt-8 p-0">
                 <div
                   className="flex flex-col gap-2 py-2 px-4 shadow-md  rounded"
-                  style={{ backgroundColor: color["50"], color: color["500"] }}
+                  style={{
+                    backgroundColor: color["50"],
+                    color: color["500"],
+                  }}
                 >
-                  <p>Are You Sure ?</p>
-                  <div className="flex gap-2">
-                    <Button
-                      className="py-1 px-3 bg-green-400 text-green-50"
-                      color="green"
-                      onClick={deleteToggle}
-                    >
-                      No
-                    </Button>
-                    <Button
-                      className="py-1 px-3 bg-red-400 text-red-50"
-                      color="red"
-                      onClick={() => {
-                        deleteTeam({ id, email: myEmail });
-                      }}
-                    >
-                      Yes Delete
-                    </Button>
-                  </div>
+                  <p className="max-w-xs">
+                    {!!error ? (
+                      <span> {error}</span>
+                    ) : (
+                      <span>Are You Sure ?</span>
+                    )}
+                  </p>
+                  {error || (
+                    <div className="flex gap-2">
+                      <Button
+                        className="py-1 px-3 bg-green-400 text-green-50"
+                        color="green"
+                        onClick={deleteToggle}
+                      >
+                        No
+                      </Button>
+                      <Button
+                        className="py-1 px-3 bg-red-400 text-red-50"
+                        color="red"
+                        onClick={() => {
+                          deleteTeam({ id, email: myEmail });
+                        }}
+                      >
+                        Yes Delete
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </PopoverContent>
             </Popover>
