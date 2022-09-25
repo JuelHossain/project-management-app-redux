@@ -12,7 +12,7 @@ const ProjectSection = ({ section }) => {
     data: projects,
     isLoading: gettingProjects,
     error: projectError,
-  } = useGetProjectsQuery(section, { refetchOnFocus: true });
+  } = useGetProjectsQuery(section, { refetchOnMountOrArgChange: true });
 
   let content;
   if (gettingProjects) {
@@ -21,7 +21,11 @@ const ProjectSection = ({ section }) => {
     content = <div>There was some error getting {section} project</div>;
   } else if (projects.length > 0) {
     content = projects?.map((project) => (
-      <ProjectCard key={project.id} id={project.id} />
+      <ProjectCard
+        key={project.id}
+        id={project.id}
+        color={project?.team?.color}
+      />
     ));
   }
   return (

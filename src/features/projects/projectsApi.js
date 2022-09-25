@@ -21,7 +21,9 @@ export const projectsApi = apiSlice.injectEndpoints({
         body: data,
       }),
 
-      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (arg, { dispatch, queryFulfilled, getState }) => {
+        const userEmail = getState().auth.user.email;
+
         try {
           const { data } = await queryFulfilled;
           // pessimistic update
@@ -29,6 +31,24 @@ export const projectsApi = apiSlice.injectEndpoints({
             projectsApi.util.updateQueryData(
               "getProjects",
               data?.section,
+              (draft) => {
+                draft.push(data);
+              }
+            )
+          );
+          dispatch(
+            projectsApi.util.updateQueryData(
+              "getUserProjects",
+              userEmail,
+              (draft) => {
+                draft.push(data);
+              }
+            )
+          );
+          dispatch(
+            projectsApi.util.updateQueryData(
+              "getProjectByTeam",
+              data.team.id,
               (draft) => {
                 draft.push(data);
               }

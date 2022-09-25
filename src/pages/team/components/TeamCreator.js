@@ -114,7 +114,7 @@ const TeamCreator = ({ open, toggle }) => {
               label={colorError || "Select A Color"}
               error={!!colorError}
               menuProps={{
-                className: "flex flex-wrap gap-2 justify-between items-center",
+                className: "grid grid-cols-9 gap-2",
               }}
             >
               {Object.keys(colors).map((key) => {
@@ -136,7 +136,7 @@ const TeamCreator = ({ open, toggle }) => {
                     style={{
                       backgroundColor: colors[key]["500"],
                     }}
-                    className={`text-[0.1px] hover:scale-150 rounded-full capitalize  w-6 h-6 `}
+                    className={`text-[0.1px] hover:scale-150 rounded-full capitalize w-6 h-6 md:w-7 md:h-7 lg:h-8 lg:w-8`}
                   >
                     <span className="hidden">hidden</span>
                   </Option>

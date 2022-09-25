@@ -7,10 +7,10 @@ import CardHeader from "../../components/Card/CardHeader";
 import Loading from "../../components/Loading";
 import TeamMenu from "./TeamMenu";
 
-const TeamCard = ({ id }) => {
+const TeamCard = ({ id, color }) => {
   const [status, toggle] = useReducer((status) => !status, false);
   const {
-    data: { name, color, about, createdAt } = {},
+    data: { name, color: dynamicColor, about, createdAt } = {},
     isLoading: teamLoading,
     error: teamError,
   } = useGetTeamQuery(id);
@@ -18,7 +18,7 @@ const TeamCard = ({ id }) => {
     return (
       <Card>
         <Loading visible={true} />
-        <CardHeader name="Loading..." />
+        <CardHeader name="Loading..." color={color} />
         <CardBody text="Loading..." />
         <CardFooter date="Loading..." />
       </Card>
@@ -26,7 +26,7 @@ const TeamCard = ({ id }) => {
   } else if (teamError) {
     return (
       <Card>
-        <CardHeader name="error" color="red" />
+        <CardHeader name="error" />
         <CardBody text="There was some error Loading this team" />
         <CardFooter date="not found" />
       </Card>
@@ -36,7 +36,7 @@ const TeamCard = ({ id }) => {
     <Card>
       <CardHeader
         name={name}
-        color={color}
+        color={dynamicColor}
         Menu={() => <TeamMenu id={id} status={status} toggle={toggle} />}
       />
       <CardBody text={about} />

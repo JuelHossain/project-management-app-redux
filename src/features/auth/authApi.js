@@ -16,16 +16,18 @@ export const authApi = apiSlice.injectEndpoints({
         body: data,
       }),
       async onQueryStarted(data, { queryFulfilled, dispatch }) {
-        // optimistic update
-        const createResult = dispatch(
-          authApi.util.updateQueryData("getUsers", undefined, (draft) => {
-            draft.push(data);
-          })
-        );
+        // optimistic update will not work here
         try {
-          await queryFulfilled;
+          const { data: { user } = {} } = await queryFulfilled;
+
+          // pessimistic update
+          dispatch(
+            authApi.util.updateQueryData("getUsers", undefined, (draft) => {
+              draft.push(user);
+            })
+          );
         } catch (err) {
-          createResult.undo();
+          console.log(err);
         }
       },
     }),

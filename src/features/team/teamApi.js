@@ -17,7 +17,6 @@ export const teamsApi = apiSlice.injectEndpoints({
       }),
       onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
         const { data } = await queryFulfilled;
-        console.log(data);
         // pessimistic cache update
         dispatch(
           teamsApi.util.updateQueryData(

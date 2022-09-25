@@ -11,7 +11,7 @@ const Card = ({ data, children, ...props }) => {
     if (search === "") {
       setMatched(false);
     } else {
-      if (data?.title.includes(search)) {
+      if (data?.title.toLowerCase().includes(search.toLowerCase())) {
         setMatched(true);
       } else {
         setMatched(false);
@@ -26,7 +26,7 @@ const Card = ({ data, children, ...props }) => {
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        if (dropResult.name !== data.section) {
+        if (dropResult.name !== data?.section) {
           stageProject({
             data,
             patch: { section: dropResult.name },
@@ -52,7 +52,7 @@ const Card = ({ data, children, ...props }) => {
           ? "border-2 shadow-lg border-blue-500 bg-blue-50/80"
           : " bg-white/80 border shadow-mds"
       }`}
-      draggable="true"
+      draggable={!!data}
     >
       {children}
     </div>

@@ -40,7 +40,11 @@ const ProjectMenu = ({ id }) => {
   const {
     title,
     section,
-    team: { color, name: teamName } = {},
+    team: {
+      color,
+      name: teamName,
+      createdBy: { email: teamCreatorEmail },
+    } = {},
     createdBy: { email: creatorEmail, name: creatorName } = {},
   } = project ?? {};
 
@@ -124,7 +128,7 @@ const ProjectMenu = ({ id }) => {
                   </div>
                 </PopoverHandler>
                 <PopoverContent className="-mt-8 p-0">
-                  {creatorEmail === myEmail ? (
+                  {creatorEmail === myEmail || teamCreatorEmail === myEmail ? (
                     <div
                       className="flex flex-col gap-2 py-2 px-4 shadow-md  rounded"
                       style={{
@@ -200,7 +204,7 @@ const ProjectMenu = ({ id }) => {
                     : "bg-green-100 text-green-900 hover:bg-green-500 hover:text-green-50 duration-300"
                 }`}
               >
-                {section}
+                {sectionToStage}
               </Button>
             ))}
           </div>

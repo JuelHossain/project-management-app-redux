@@ -56,7 +56,7 @@ const UserProjects = () => {
     <Card className="bg-white/80 flex-1">
       <Loading visible={gettingProjects} />
 
-      <CardBody className="flex flex-col gap-4  overflow-auto  max-h-[425px]">
+      <CardBody className="flex flex-col gap-4  overflow-auto  max-h-[425px] flex-1">
         <div>
           <h4 className="text-2xl font-bold text-center">
             Projects You Have Created
