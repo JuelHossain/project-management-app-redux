@@ -74,6 +74,19 @@ export const projectsApi = apiSlice.injectEndpoints({
           })
         );
 
+        const patchResult = dispatch(
+          projectsApi.util.updateQueryData(
+            "getProjectByTeam",
+            data.team.id,
+            (draft) => {
+              Object.assign(
+                draft.find((project) => project.id === data.id),
+                patch
+              );
+            }
+          )
+        );
+
         // optimistic cache update of project dropped section
         const pushResult = dispatch(
           projectsApi.util.updateQueryData(
@@ -100,6 +113,7 @@ export const projectsApi = apiSlice.injectEndpoints({
           putResult.undo();
           pushResult.undo();
           popResult.undo();
+          patchResult.undo();
         }
       },
     }),

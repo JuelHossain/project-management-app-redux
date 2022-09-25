@@ -1,4 +1,5 @@
 import { apiSlice } from "../api/apiSlice";
+import { projectsApi } from "../projects/projectsApi";
 
 export const teamsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -42,8 +43,21 @@ export const teamsApi = apiSlice.injectEndpoints({
             Object.assign(draft, data);
           })
         );
+
         try {
-          await queryFulfilled;
+          const { data: updatedTeam } = await queryFulfilled;
+          // updating projects team details;
+          const projectsOfThisTeam = await dispatch(
+            projectsApi.endpoints.getProjectByTeam.initiate(id)
+          ).unwrap();
+          projectsOfThisTeam.forEach((project) => {
+            dispatch(
+              projectsApi.endpoints.editProject.initiate({
+                id: project.id,
+                data: { team: updatedTeam },
+              })
+            );
+          });
         } catch {
           patchResult.undo();
         }

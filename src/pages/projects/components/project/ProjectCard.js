@@ -14,7 +14,6 @@ const ProjectCard = ({ id }) => {
     title,
     createdAt,
     createdBy,
-    section,
     team: { name, color } = {},
   } = data ?? {};
 
@@ -42,7 +41,7 @@ const ProjectCard = ({ id }) => {
       <CardHeader
         name={name}
         color={color}
-        Menu={() => <ProjectMenu id={id} color={color} />}
+        Menu={() => <ProjectMenu id={id} />}
       />
       <CardBody text={title} />
       <CardFooter user={createdBy} date={createdAt} avatar />

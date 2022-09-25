@@ -1,3 +1,4 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Card, CardBody, IconButton } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import ScrollBar from "react-perfect-scrollbar";
@@ -72,20 +73,7 @@ const ManageUsers = () => {
                 reset();
               }}
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
+              <XMarkIcon className="w-4 h-4" />
             </IconButton>
           </div>
         )}

@@ -1,3 +1,5 @@
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import { IconButton, Input } from "@material-tailwind/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -159,20 +161,7 @@ const AddMember = ({ id }) => {
             color={color?.name}
             type="submit"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
+            <PlusCircleIcon className="w-5 h-5" />
           </IconButton>
         }
       />
@@ -190,20 +179,7 @@ const AddMember = ({ id }) => {
               color="red"
               variant="text"
             >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
+              <XMarkIcon className="w-4 h-4" />
             </IconButton>
           )}
         </div>

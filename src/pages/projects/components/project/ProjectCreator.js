@@ -63,8 +63,9 @@ const ProjectCreator = ({ open, toggle }) => {
   useEffect(() => {
     if (!open) {
       setSelectedTeam("");
+      reset();
     }
-  }, [open]);
+  }, [open, reset]);
 
   return (
     <Dialog

@@ -110,7 +110,7 @@ export default function Login() {
                 } text-center text-sm  p-2 rounded-md`}
               >
                 {loginError
-                  ? "There was some error login "
+                  ? loginError?.error || loginError?.data
                   : " Only Registered User Can sign in."}
               </Typography>
             </CardBody>

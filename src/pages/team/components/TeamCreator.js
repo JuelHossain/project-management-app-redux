@@ -25,10 +25,9 @@ const TeamCreator = ({ open, toggle }) => {
   const { data: teams } = useGetTeamsQuery("");
   // team exist or not
   const isExist = (name) => {
-    const team = teams?.filter((team) => {
-      if (team.name === name) return true;
-      else return false;
-    });
+    const team = teams?.filter(
+      (team) => team.name.toLowerCase() === name.toLowerCase()
+    );
     if (team.length > 0) return true;
     else return false;
   };
@@ -66,8 +65,9 @@ const TeamCreator = ({ open, toggle }) => {
   useEffect(() => {
     if (!open) {
       setColor("");
+      reset();
     }
-  }, [open]);
+  }, [open, reset]);
 
   return (
     <Dialog

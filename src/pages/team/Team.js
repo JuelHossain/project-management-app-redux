@@ -9,7 +9,7 @@ import TeamHeader from "./components/TeamHeader";
 
 const Team = () => {
   const { email } = useSelector((state) => state.auth.user);
-  const { data, isLoading, error } = useGetTeamsQuery(email);
+  const { data, isLoading, error } = useGetTeamsQuery(email,{refetchOnMountOrArgChange:true});
   let content;
   if (data?.length > 0) {
     content = data.map((team) => {
