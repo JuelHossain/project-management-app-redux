@@ -3,7 +3,10 @@ import { useDispatch } from "react-redux";
 import { setSearch } from "../../../../features/projects/projectsSlice";
 
 const Search = ({ match, cls }) => {
+  // dispatch function
   const dispatch = useDispatch();
+
+  // handling debounce
   const debounceHandler = (fn, delay) => {
     let timeoutId;
     return (...args) => {
@@ -14,10 +17,12 @@ const Search = ({ match, cls }) => {
     };
   };
 
+  // searching projects
   const doSearch = (value) => {
     dispatch(setSearch(value));
   };
 
+  // handling search
   const handleSearch = debounceHandler(doSearch, 500);
 
   return (

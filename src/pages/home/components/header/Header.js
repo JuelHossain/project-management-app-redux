@@ -3,7 +3,7 @@ import { useMatch } from "react-router-dom";
 import Logo from "./Logo";
 import NavList from "./NavList";
 import Search from "./Search";
-import UserNav from "./UserNav";
+import UserNav from "./user-nav/UserNav";
 
 export default function Header() {
   const match = useMatch("/projects");

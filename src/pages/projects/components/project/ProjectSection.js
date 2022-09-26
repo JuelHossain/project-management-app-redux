@@ -4,36 +4,32 @@ import ProjectCard from "./ProjectCard";
 
 import { useGetProjectsQuery } from "../../../../features/projects/projectsApi";
 import Loading from "../../../components/Loading";
+import ProjectCreator from "../project/project-creator/ProjectCreator";
 import SectionHeader from "../section/SectionHeader";
 import ProjectContainer from "./ProjectContainer";
 
 const ProjectSection = ({ section }) => {
-  const {
-    data: projects,
-    isLoading: gettingProjects,
-    error: projectError,
-  } = useGetProjectsQuery(section, { refetchOnMountOrArgChange: true });
+  const { data, isLoading, isError } = useGetProjectsQuery(section, {
+    refetchOnMountOrArgChange: true,
+  });
 
   let content;
-  if (gettingProjects) {
+  if (isLoading) {
     content = <Loading visible={true} />;
-  } else if (projectError) {
+  } else if (isError) {
     content = <div>There was some error getting {section} project</div>;
-  } else if (projects.length > 0) {
-    content = projects?.map((project) => (
-      <ProjectCard
-        key={project.id}
-        id={project.id}
-        color={project?.team?.color}
-      />
-    ));
+  } else if (data.length > 0) {
+    content = data.map((project) => {
+      const { id, team: { color } = {} } = project;
+      return <ProjectCard key={id} id={id} color={color} />;
+    });
   }
   return (
     <Section section={section}>
       <SectionHeader
-        count={projects?.length}
+        count={data?.length}
         name={section}
-        add={section === "backlog" && true}
+        Add={section === "backlog" && ProjectCreator}
       />
       <ProjectContainer>{content}</ProjectContainer>
     </Section>

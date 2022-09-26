@@ -23,8 +23,8 @@ import {
   useGetTeamQuery,
 } from "../../../features/team/teamApi";
 import { colors } from "../../../utils/colors";
-import AddMember from "./AddMember";
-import Members from "./Members";
+import AddMember from "./add-member/AddMember";
+import Members from "./members/Members";
 
 const TeamMenu = ({ id, status, toggle }) => {
   const [error, setError] = useState("");

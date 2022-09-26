@@ -1,10 +1,6 @@
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { IconButton } from "@material-tailwind/react";
-import React, { useReducer } from "react";
-import ProjectCreator from "../project/ProjectCreator";
+import React from "react";
 
-const SectionHeader = ({ add, name, count }) => {
-  const [status, toggle] = useReducer((status) => !status, false);
+const SectionHeader = ({ Add, name, count }) => {
   return (
     <div className="flex items-center flex-shrink-0 h-10 px-2 justify-between">
       <div className="flex gap-2">
@@ -13,19 +9,7 @@ const SectionHeader = ({ add, name, count }) => {
           {count}
         </span>
       </div>
-      {add && (
-        <>
-          <IconButton
-            variant="text"
-            color="indigo"
-            className="w-7 h-7"
-            onClick={toggle}
-          >
-            <PlusIcon className="w-5 h-5" />
-          </IconButton>
-          <ProjectCreator open={status} toggle={toggle} />
-        </>
-      )}
+      {Add && <Add />}
     </div>
   );
 };

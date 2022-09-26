@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import useAuthCheck from "./hooks/useAuthCheck";
 
-import Login from "./pages/auth/Login";
+import Login from "./pages/auth/login/Login";
 import Loading from "./pages/components/Loading";
 import Home from "./pages/home/Home";
 import Projects from "./pages/projects/Projects";
