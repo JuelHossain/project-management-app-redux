@@ -1,6 +1,6 @@
 import { Button, CardFooter } from "@material-tailwind/react";
 import { useGetUsersQuery } from "../../../features/auth/authApi";
-import { randomUser } from "../../../utils/randomUser";
+import { randomUser } from "../../../utils/lib";
 import Error from "../../components/alert/Error";
 import Loading from "../../components/Loading";
 

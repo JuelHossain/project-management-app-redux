@@ -1,8 +1,7 @@
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { IconButton, Input } from "@material-tailwind/react";
-import React from "react";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../../../features/auth/authSelector";
+import { selectUser } from "../../../../../features/auth/authSelector";
 
 export default function AddInput({
   color,

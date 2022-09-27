@@ -1,6 +1,6 @@
 import { Input } from "@material-tailwind/react";
 import { useGetTeamsQuery } from "../../../../features/team/teamApi";
-import { isTeamExist } from "../../../../utils/isTeamExists";
+import { isTeamExist } from "../../../../utils/lib";
 
 export default function TeamNameInput({ error, register }) {
   // getting teams

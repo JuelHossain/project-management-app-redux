@@ -10,18 +10,25 @@ import {
 import ScrollBar from "react-perfect-scrollbar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { selectUser } from "../../features/auth/authSelector";
 import { useGetTeamsQuery } from "../../features/team/teamApi";
 import Loading from "../components/Loading";
 
 const UserTeams = () => {
-  const { email: myEmail } = useSelector((state) => state.auth.user);
+  // logged in user
+  const { email: myEmail } = useSelector(selectUser);
+
+  // getting teams
   const {
     data: teams,
     isLoading: gettingTeams,
     error: teamsError,
   } = useGetTeamsQuery(myEmail);
 
+  // content holder
   let content;
+
+  // decide what to render
   if (teamsError) {
     content = (
       <Alert color="red">There was some error getting your Teams</Alert>
@@ -60,8 +67,12 @@ const UserTeams = () => {
 export default UserTeams;
 
 function UserTeamList({ team }) {
-  const { email: myEmail } = useSelector((state) => state.auth.user);
+  // logged in user
+  const { email: myEmail } = useSelector(selectUser);
+
+  // destructuring property from team
   const { createdBy: { email: creatorEmail } = {}, name, color } = team ?? {};
+
   return (
     <div className="flex p-2 items-center rounded-md bg-blue-200/50 hover:bg-blue-300/50 gap-2 ">
       <IconButton color={color.name}>

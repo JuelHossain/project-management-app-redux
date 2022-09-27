@@ -1,5 +1,5 @@
 import { CardBody, Input } from "@material-tailwind/react";
-import isValidEmail from "../../../utils/isValidEmail";
+import { isValidEmail } from "../../../utils/lib";
 import Error from "../../components/alert/Error";
 import Success from "../../components/alert/Success";
 export default function LoginBody({ register, errors, loginError }) {

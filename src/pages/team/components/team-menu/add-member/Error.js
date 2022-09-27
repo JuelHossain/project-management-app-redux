@@ -1,8 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { IconButton } from "@material-tailwind/react";
-import React from "react";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../../../features/auth/authSelector";
+import { selectUser } from "../../../../../features/auth/authSelector";
 
 const Error = ({ error, creatorEmail, setError, setInput, setSuccess }) => {
   const { email: myEmail } = useSelector(selectUser);

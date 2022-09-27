@@ -10,11 +10,18 @@ import TeamCard from "./components/TeamCard";
 import TeamCardContainer from "./components/TeamCardContainer";
 
 const Team = () => {
+  // logged in user
   const { email } = useSelector(selectUser);
+
+  // getting teams
   const { data, isLoading, isError } = useGetTeamsQuery(email, {
     refetchOnMountOrArgChange: true,
   });
+
+  // content holder
   let content;
+
+  // decide what to render
   if (data?.length > 0) {
     content = data.map((team) => {
       const { id, color } = team;
@@ -26,6 +33,7 @@ const Team = () => {
   } else if (isError) {
     content = "Oops, There was some error loading your teams";
   }
+  
   return (
     <PageContainer>
       <Loading visible={isLoading} />

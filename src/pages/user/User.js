@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { selectUser } from "../../features/auth/authSelector";
 import PageContainer from "../components/PageContainer";
 import CreateUser from "./CreateUser";
 import ManageUsers from "./ManageUsers";
@@ -8,7 +9,7 @@ import UserProjects from "./UserProject";
 import UserTeams from "./UserTeams";
 
 const User = () => {
-  const { admin } = useSelector((state) => state.auth.user);
+  const { admin } = useSelector(selectUser);
 
   return (
     <PageContainer>

@@ -10,25 +10,33 @@ import Loading from "../components/Loading";
 import UserList from "./UserList";
 
 const ManageUsers = () => {
+  // necessary states
   const [deletedUser, setDeletedUser] = useState("");
+
+  // getting users
   const {
     data: users,
     isLoading: gettingUsers,
     error: usersError,
   } = useGetUsersQuery();
 
+  // delete user mutation
   const [
     deleteUser,
     { isLoading: deleting, error: deleteError, isSuccess: deleted, reset },
   ] = useDeleteUserMutation();
 
+  // resetting after successfully delete
   useEffect(() => {
     if (deleted || deleteError) {
       setTimeout(reset, 3000);
     }
   }, [deleted, deleteError, reset]);
 
+  // users content holder
   let content;
+
+  // decide what to render
   if (usersError) {
     content = "there was some error getting users";
   } else if (users?.length > 0) {
@@ -46,6 +54,7 @@ const ManageUsers = () => {
   } else {
     content = "nothing found";
   }
+
   return (
     <Card className="bg-white/80 flex-1 ">
       <Loading visible={gettingUsers || deleting} />

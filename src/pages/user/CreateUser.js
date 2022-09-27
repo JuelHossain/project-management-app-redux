@@ -10,10 +10,11 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../../features/auth/authApi";
-import isValidEmail from "../../utils/isValidEmail";
+import {isValidEmail} from "../../utils/lib";
 import Loading from "../components/Loading";
 
 export default function CreateUser() {
+  // getting hook form
   const {
     register,
     handleSubmit,
@@ -21,10 +22,14 @@ export default function CreateUser() {
     reset,
   } = useForm();
 
+  // create user mutation
   const [createUser, { error, isSuccess, isLoading, reset: resetData }] =
     useCreateUserMutation();
 
+  // navigate option
   const navigate = useNavigate();
+
+  // resetting after creating user
   useEffect(() => {
     if (isSuccess) {
       reset();
@@ -32,12 +37,14 @@ export default function CreateUser() {
     }
   }, [isSuccess, reset, navigate, resetData]);
 
-  const loginHandler = (data) => {
+  // handling create user
+  const createUserHandler = (data) => {
     createUser(data);
   };
+
   return (
     <form
-      onSubmit={handleSubmit(loginHandler)}
+      onSubmit={handleSubmit(createUserHandler)}
       className=" flex flex-col flex-1 "
     >
       <Card className=" bg-white/80 flex-1 ">

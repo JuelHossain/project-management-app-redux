@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useGetUserQuery } from "../../../../features/auth/authApi";
-import { selectUser } from "../../../../features/auth/authSelector";
+import { useGetUserQuery } from "../../../../../features/auth/authApi";
+import { selectUser } from "../../../../../features/auth/authSelector";
 import {
   useEditTeamMutation,
   useGetTeamQuery,
-} from "../../../../features/team/teamApi";
-import { debounceHandler } from "../../../../utils/debounceHandler";
-import isValidEmail from "../../../../utils/isValidEmail";
+} from "../../../../../features/team/teamApi";
+import { debounceHandler, isValidEmail } from "../../../../../utils/lib";
 import AddInput from "./AddInput";
 import Error from "./Error";
 import UserSuggestions from "./UserSuggestions";

@@ -1,7 +1,6 @@
-import React from "react";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../../../features/auth/authSelector";
-import { isUserExist } from "../../../../utils/isUserExist";
+import { selectUser } from "../../../../../features/auth/authSelector";
+import { isUserExist } from "../../../../../utils/lib";
 
 const UserSuggestions = ({
   showSuggestion,
