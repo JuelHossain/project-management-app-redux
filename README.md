@@ -4,26 +4,26 @@
 
 ### User Emails
 
-    - test@test.com
-    - test1@test.com
-    - test2@test.com
-    - test3@test.com
-    - test4@test.com
-    - test5@test.com
-    - test6@test.com
-    - test7@test.com
-    - test8@test.com
-    - test9@test.com
-    - test10@test.com
+- test@test.com
+- test1@test.com
+- test2@test.com
+- test3@test.com
+- test4@test.com
+- test5@test.com
+- test6@test.com
+- test7@test.com
+- test8@test.com
+- test9@test.com
+- test10@test.com
 
 ### Admin Emails
 
-    - admin@admin.com
-    - jrrahman01@gmail.com
+- admin@admin.com
+- jrrahman01@gmail.com
 
 ### Password
 
-    - hello
+- hello
 
 ## Please Consider Checking these features
 
@@ -46,14 +46,14 @@ if you click on the name of the user after logging in from the navbar. you will 
 
 1. user can see projects created by user with a list view.
 
-   - [ ] user can see team working on the team with blue color
-   - [ ] user can see project stage with green color chip
+   - user can see team working on the team with blue color
+   - user can see project stage with green color chip
 
 2. user can see teams they member of with a list view.
 
-   - [ ] dynamic color icon
-   - [ ] icon based on user position on the team
-   - [ ] green tag based on user position on the team
+   - dynamic color icon
+   - icon based on user position on the team
+   - green tag based on user position on the team
 
 ### teams page
 
@@ -62,10 +62,10 @@ if you click on the name of the user after logging in from the navbar. you will 
 3. card will show a menu icon on the right top corner.
    if user click on the icon another popup card will show and user can
 
-   - [ ] add member on the team
-   - [ ] delete team based on some complex logic
-   - [ ] change the color in one click
-   - [ ] see the team members on right side with a list view
+   - add member on the team
+   - delete team based on some complex logic
+   - change the color in one click
+   - see the team members on right side with a list view
 
 4. ##### add member features
 
@@ -114,4 +114,4 @@ if you click on the name of the user after logging in from the navbar. you will 
 
 6. user can edit the title of the project from the menu
 
-> #### Thats is please consider checking all of the features and give me mark . i have done this project with 7 days of hard work. and also check the quality of code i have done. thank you.
+> ##### Thats is please consider checking all of the features and give me mark . i have done this project with 7 days of hard work. and also check the quality of code i have done. thank you.
