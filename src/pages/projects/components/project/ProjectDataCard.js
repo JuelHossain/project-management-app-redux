@@ -5,6 +5,7 @@ import CardHeader from "../../../components/Card/CardHeader";
 import ProjectMenu from "./project-menu/ProjectMenu";
 
 export default function ProjectDataCard({ data }) {
+
   const {
     id,
     title,

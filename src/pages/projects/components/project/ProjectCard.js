@@ -5,7 +5,8 @@ import LoadingCard from "../../../components/cards/LoadingCard";
 import ProjectDataCard from "./ProjectDataCard";
 
 const ProjectCard = ({ id, color }) => {
-  const { data, isLoading, isError } = useGetProjectQuery(id);
+  const {data, isLoading, isError } = useGetProjectQuery(id);
+
   if (isLoading) {
     return <LoadingCard color={color} />;
   } else if (isError) {

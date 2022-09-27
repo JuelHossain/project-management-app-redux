@@ -7,6 +7,8 @@ import { selectSearch } from "../../../features/projects/projectSelectors";
 const Card = ({ data, children, ...props }) => {
   const search = useSelector(selectSearch);
   const [matched, setMatched] = useState(false);
+  const [stageTo, setStageTo] = useState("");
+  const [stageProject] = useStageProjectMutation();
   useEffect(() => {
     if (search === "") {
       setMatched(false);
@@ -19,18 +21,23 @@ const Card = ({ data, children, ...props }) => {
     }
   }, [search, data]);
 
-  const [stageProject] = useStageProjectMutation();
+  useEffect(() => {
+    if (!!stageTo) {
+      stageProject({
+        data: data,
+        patch: { section: stageTo },
+      });
+    }
+  }, [stageTo, stageProject, data]);
+
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "BOX",
     item: { id: data?.id },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        if (dropResult.name !== data?.section) {
-          stageProject({
-            data,
-            patch: { section: dropResult.name },
-          });
+        if (dropResult.name !== data.section) {
+          setStageTo(dropResult.name);
         }
       }
     },
@@ -52,7 +59,6 @@ const Card = ({ data, children, ...props }) => {
           ? "border-2 shadow-lg border-blue-500 bg-blue-50/80"
           : " bg-white/80 border shadow-mds"
       }`}
-      draggable={!!data}
     >
       {children}
     </div>
