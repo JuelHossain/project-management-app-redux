@@ -1,11 +1,11 @@
 import { Popover, PopoverContent } from "@material-tailwind/react";
 import { useReducer } from "react";
-
 import { useGetTeamQuery } from "../../../../features/team/teamApi";
 import MenuButton from "../../../components/shared/MenuButton";
 import AddMember from "./add-member/AddMember";
 import DeleteTeam from "./delete-team/DeleteTeam";
 import Members from "./members/Members";
+import MenuHeader from "./MenuHeader";
 import UpdateColorPicker from "./UpdateColorPicker";
 
 const TeamMenu = ({ id, status, toggle }) => {
@@ -29,19 +29,13 @@ const TeamMenu = ({ id, status, toggle }) => {
       <MenuButton color={color} />
       <PopoverContent className="flex gap-3 flex-col sm:flex-row -ml-3">
         <div className="flex flex-col gap-2  max-w-[220px]">
-          <div className="flex justify-between gap-2">
-            <p
-              className={`text-lg  font-bold`}
-              style={{ color: color?.common?.color }}
-            >
-              Team {name}
-            </p>
+          <MenuHeader color={color} name={name}>
             <DeleteTeam
+              id={id}
               deleteOpen={deleteOpen}
               deleteToggle={deleteToggle}
-              id={id}
             />
-          </div>
+          </MenuHeader>
           <AddMember id={id} />
           <UpdateColorPicker id={id} />
         </div>

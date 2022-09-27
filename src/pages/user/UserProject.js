@@ -24,10 +24,10 @@ const UserProjects = () => {
     error: projectsError,
   } = useGetUserProjectsQuery(email);
 
-  // content holder 
+  // content holder
   let content;
 
-  // deciding what to render 
+  // deciding what to render
   if (projectsError) {
     content = (
       <Alert color="red">There was some error getting your projects</Alert>
@@ -45,13 +45,13 @@ const UserProjects = () => {
     <Card className="bg-white/80 flex-1">
       <Loading visible={gettingProjects} />
 
-      <CardBody className="flex flex-col gap-4  overflow-auto  max-h-[425px] flex-1">
+      <CardBody className="flex flex-col gap-4  flex-1">
         <div>
           <h4 className="text-2xl font-bold text-center">
             Projects You Have Created
           </h4>
         </div>
-        <ScrollBar className="space-y-2 ">{content}</ScrollBar>
+        <ScrollBar className="space-y-2 max-h-[350px]">{content}</ScrollBar>
       </CardBody>
       <CardFooter className="pt-0">
         <Button

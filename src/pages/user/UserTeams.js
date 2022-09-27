@@ -44,13 +44,13 @@ const UserTeams = () => {
     <Card className="bg-white/80 flex-1 ">
       <Loading visible={gettingTeams} />
 
-      <CardBody className="flex flex-col gap-4 max-h-[425px] overflow-auto flex-1">
+      <CardBody className="flex flex-col gap-4 flex-1">
         <div>
           <h4 className="text-2xl font-bold text-center">
             Teams You are member of
           </h4>
         </div>
-        <ScrollBar className="space-y-2 ">{content}</ScrollBar>
+        <ScrollBar className="space-y-2 max-h-[350px]">{content}</ScrollBar>
       </CardBody>
       <CardFooter
         className="pt-0"

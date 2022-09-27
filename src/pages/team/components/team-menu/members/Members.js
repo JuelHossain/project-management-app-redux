@@ -34,9 +34,11 @@ const Members = ({ id }) => {
       </p>
     );
   } else {
-    <p className="text-red-500 text-xs py-1 px-3 bg-red-100 rounded-md mt-1">
-      {"There is no member found"}
-    </p>;
+    membersContent = (
+      <p className="text-red-500 text-xs py-1 px-3 bg-red-100 rounded-md mt-1">
+        {"Something very strange happened"}
+      </p>
+    );
   }
   return (
     <ul className="flex gap-1 flex-col flex-shrink-0 ">

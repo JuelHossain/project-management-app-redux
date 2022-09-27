@@ -59,10 +59,10 @@ const ManageUsers = () => {
     <Card className="bg-white/80 flex-1 ">
       <Loading visible={gettingUsers || deleting} />
 
-      <CardBody className="flex flex-col gap-4  max-h-[323px]  overflow-auto ">
+      <CardBody className="flex flex-col gap-4">
         <h4 className="text-2xl font-bold text-center">Manage Users</h4>
 
-        <ScrollBar className="space-y-2">{content}</ScrollBar>
+        <ScrollBar className="space-y-2 max-h-[228px]">{content}</ScrollBar>
         {(deleteError || deleted) && (
           <div
             className={`p-2 rounded-md  flex justify-between items-center ${

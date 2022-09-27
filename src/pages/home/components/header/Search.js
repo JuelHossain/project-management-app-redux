@@ -1,21 +1,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { setSearch } from "../../../../features/projects/projectsSlice";
+import { debounceHandler } from "../../../../utils/lib";
 
 const Search = ({ match, cls }) => {
   // dispatch function
   const dispatch = useDispatch();
-
-  // handling debounce
-  const debounceHandler = (fn, delay) => {
-    let timeoutId;
-    return (...args) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        fn(...args);
-      }, delay);
-    };
-  };
 
   // searching projects
   const doSearch = (value) => {
