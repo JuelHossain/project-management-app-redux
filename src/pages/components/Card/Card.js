@@ -38,6 +38,8 @@ const Card = ({ data, children, ...props }) => {
       if (item && dropResult) {
         if (dropResult.name !== data.section) {
           setStageTo(dropResult.name);
+        } else {
+          setStageTo("");
         }
       }
     },
