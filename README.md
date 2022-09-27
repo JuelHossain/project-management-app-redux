@@ -114,4 +114,4 @@ if you click on the name of the user after logging in from the navbar. you will 
 
 6. user can edit the title of the project from the menu
 
-> ##### Thats is please consider checking all of the features and give me mark . i have done this project with 7 days of hard work. and also check the quality of code i have done. thank you.
+> ##### Thats it please consider checking all of the features and give me mark . i have done this project with 7 days of hard work. and also check the quality of code i have done. thank you.
