@@ -27,8 +27,9 @@ export const isUserExist = (members, userEmail) => {
 
 // check if team exist or not
 export const isTeamExist = (teams, name) => {
+  console.log(teams);
   const team = teams?.filter(
-    (team) => team.name.toLowerCase() === name.toLowerCase()
+    (team) => team.name.toLowerCase() === name?.toLowerCase()
   );
   if (team.length > 0) return true;
   else return false;
@@ -39,8 +40,7 @@ export const getNewMembers = (members, memberId) => {
   return members.filter((existingMember) => existingMember.id !== memberId);
 };
 
-
-// debounce handler 
+// debounce handler
 export const debounceHandler = (fn, delay) => {
   let timeoutId;
   return (...args) => {

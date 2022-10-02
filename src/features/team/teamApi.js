@@ -4,7 +4,7 @@ import { projectsApi } from "../projects/projectsApi";
 export const teamsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getTeams: builder.query({
-      query: (email) => `/teams?q=${email}`,
+      query: (email) => `/teams?createdBy.email_like=${email}`,
     }),
     getTeam: builder.query({
       query: (id) => `/teams/${id}`,
@@ -26,6 +26,12 @@ export const teamsApi = apiSlice.injectEndpoints({
               draft.push(data);
             }
           )
+        );
+        // pessimistic cache update
+        dispatch(
+          teamsApi.util.updateQueryData("getTeams", "", (draft) => {
+            draft.push(data);
+          })
         );
       },
     }),
@@ -74,10 +80,17 @@ export const teamsApi = apiSlice.injectEndpoints({
             return draft.filter((team) => team.id !== id);
           })
         );
+        // optimistic cache update
+        const deleteResult2 = dispatch(
+          teamsApi.util.updateQueryData("getTeams", "", (draft) => {
+            return draft.filter((team) => team.id !== id);
+          })
+        );
         try {
           await queryFulfilled;
         } catch {
           deleteResult.undo();
+          deleteResult2.undo();
         }
       },
     }),

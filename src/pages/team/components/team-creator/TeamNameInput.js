@@ -9,6 +9,7 @@ export default function TeamNameInput({ error, register }) {
     isLoading: gettingTeams,
     isError: isGettingTeamsError,
   } = useGetTeamsQuery("");
+  console.log(teams);
 
   return (
     <Input
