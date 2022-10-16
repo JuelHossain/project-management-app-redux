@@ -1,5 +1,7 @@
 # Project Manager app With Redux
 
+[check the live site here](https://project-manager-juel.netlify.app)
+
 ## some users to login and adding member in team
 
 ### User Emails
